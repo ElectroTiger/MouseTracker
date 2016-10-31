@@ -18,10 +18,14 @@
 
 class ID_xxLA {
 public:
-    ID_xxLA();
+    ID_xxLA(std::unique_ptr<IO::UARTBase> pUART, std::unique_ptr<IO::InterruptPinBase> pInterPin);
     ID_xxLA(const ID_xxLA& orig);
     virtual ~ID_xxLA();
+    
+    
 private:
+    std::unique_ptr<IO::UARTBase> pUART;
+    std::unique_ptr<IO::InterruptPinBase> pInterPin;
 
 };
 

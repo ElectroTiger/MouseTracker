@@ -45,6 +45,7 @@
           <standard>8</standard>
           <incDir>
             <pElem>${INCLUDE}</pElem>
+            <pElem>..</pElem>
           </incDir>
           <commandLine>${FLAGS_GPP}</commandLine>
         </ccTool>

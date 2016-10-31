@@ -84,11 +84,24 @@ namespace IO {
 
     class InterruptPin : public InterruptPinBase {
     public:
-        virtual ~InterruptPin() = 0;
-        virtual void setIsEnabled(bool b) = 0;
-        virtual bool getIsEnabled() = 0;
-        virtual void setMode(InterruptPinMode pinmode);
-        //virtual void setISR(std::function<void()> f);
+        InterruptPin(uint32_t pin) {
+            
+        }
+        virtual ~InterruptPin() {}
+        virtual void setIsEnabled(bool b) final {
+            isEnabled = b;
+        }
+        virtual bool getIsEnabled() final {
+            return isEnabled;
+        }
+        virtual void setMode(InterruptPinMode pinmode) final {
+            
+        }
+        virtual void setISR(boost::function<void()> f) final {
+            
+        }
+    private:
+        bool isEnabled;
     };
 
     /**

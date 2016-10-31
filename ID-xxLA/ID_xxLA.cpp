@@ -12,8 +12,10 @@
  */
 
 #include "ID_xxLA.h"
+#include <memory>
+#include "../IO/IO.h"
 
-ID_xxLA::ID_xxLA() {
+ID_xxLA::ID_xxLA(std::unique_ptr<IO::UARTBase> pUART, std::unique_ptr<IO::InterruptPinBase> pInterPin) {
 }
 
 ID_xxLA::ID_xxLA(const ID_xxLA& orig) {

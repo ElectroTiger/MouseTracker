@@ -1146,7 +1146,12 @@ basic_istream<_CharT, _Traits>::ignore(streamsize __n, int_type __delim) {
 
   if (__sentry) {
     basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
+    // Added this block to remove unused warning.
+#ifdef __GNUC__
+    typedef _STLP_PRIV _Constant_unary_fun<bool, int_type> _Const_bool __attribute__((unused));
+#else
     typedef _STLP_PRIV _Constant_unary_fun<bool, int_type> _Const_bool;
+#endif
     typedef _STLP_PRIV _Constant_binary_fun<streamsize, streamsize, streamsize>
       _Const_streamsize;
     const streamsize __maxss = (numeric_limits<streamsize>::max)();

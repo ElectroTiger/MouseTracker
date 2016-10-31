@@ -12,12 +12,16 @@
  
  */
 
+// NOTE: Arduino's binary.h should be removed.
+// NOTE: Arduino: In WString.h, the line "//#define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))" should be commented.
+
 #ifndef IO_H
 #define IO_H
 
 #include <vector>
 #include <memory>
 #include <functional>
+#include "../boost/function.hpp"
 
 namespace IO {
     
@@ -54,15 +58,16 @@ namespace IO {
         virtual void write(bool);
     };
     
-    // I would like to spell out HIGH, LOW, CHANG, but macro definitions ruin that.
+    // I would like to spell out HIGH, LOW, CHANGE, but macro definitions ruin that.
     enum InterruptPinMode {HI, LO, CHNG, RSING, FLING};
     class InterruptPinBase {
     public:
-        virtual ~InterruptPinBase() = 0;
+        virtual ~InterruptPinBase(){};
         virtual void setIsEnabled(bool b) = 0;
         virtual bool getIsEnabled() = 0;
         virtual void setMode(InterruptPinMode pinmode);
-        //virtual void setISR(std::function<void()> f);
+        // Would prefer to use std function, but we can't because of Arduino.
+        virtual void setISR(boost::function<void()> f) = 0;
     };
     
         /**
