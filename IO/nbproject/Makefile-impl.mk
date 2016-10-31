@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=IO
 
 # Active Configuration
-DEFAULTCONF=Debug
+DEFAULTCONF=Debug_RPi
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Debug Release 
+ALLCONFS=Debug_RPi Release Debug_RpiCross Debug_Arduino 
 
 
 # build

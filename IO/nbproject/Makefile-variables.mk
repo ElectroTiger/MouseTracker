@@ -6,22 +6,38 @@
 CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
-# Debug configuration
-CND_PLATFORM_Debug=GNU-Linux
-CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=libio.a
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/libio.a
-CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
-CND_PACKAGE_NAME_Debug=IO.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/IO.tar
+# Debug_RPi configuration
+CND_PLATFORM_Debug_RPi=GNU-Linux
+CND_ARTIFACT_DIR_Debug_RPi=dist/Debug_RPi/GNU-Linux
+CND_ARTIFACT_NAME_Debug_RPi=libio.a
+CND_ARTIFACT_PATH_Debug_RPi=dist/Debug_RPi/GNU-Linux/libio.a
+CND_PACKAGE_DIR_Debug_RPi=dist/Debug_RPi/GNU-Linux/package
+CND_PACKAGE_NAME_Debug_RPi=IO.tar
+CND_PACKAGE_PATH_Debug_RPi=dist/Debug_RPi/GNU-Linux/package/IO.tar
 # Release configuration
-CND_PLATFORM_Release=GNU-Linux
-CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
+CND_PLATFORM_Release=Cygwin-Windows
+CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
 CND_ARTIFACT_NAME_Release=libio.a
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/libio.a
-CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
+CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/libio.a
+CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
 CND_PACKAGE_NAME_Release=IO.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/IO.tar
+CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/IO.tar
+# Debug_RpiCross configuration
+CND_PLATFORM_Debug_RpiCross=SysGCC_RPi-Windows
+CND_ARTIFACT_DIR_Debug_RpiCross=dist/Debug_RpiCross/SysGCC_RPi-Windows
+CND_ARTIFACT_NAME_Debug_RpiCross=libio.a
+CND_ARTIFACT_PATH_Debug_RpiCross=dist/Debug_RpiCross/SysGCC_RPi-Windows/libio.a
+CND_PACKAGE_DIR_Debug_RpiCross=dist/Debug_RpiCross/SysGCC_RPi-Windows/package
+CND_PACKAGE_NAME_Debug_RpiCross=IO.tar
+CND_PACKAGE_PATH_Debug_RpiCross=dist/Debug_RpiCross/SysGCC_RPi-Windows/package/IO.tar
+# Debug_Arduino configuration
+CND_PLATFORM_Debug_Arduino=Arduino_AVR-Windows
+CND_ARTIFACT_DIR_Debug_Arduino=dist/Debug_Arduino/Arduino_AVR-Windows
+CND_ARTIFACT_NAME_Debug_Arduino=libio.a
+CND_ARTIFACT_PATH_Debug_Arduino=dist/Debug_Arduino/Arduino_AVR-Windows/libio.a
+CND_PACKAGE_DIR_Debug_Arduino=dist/Debug_Arduino/Arduino_AVR-Windows/package
+CND_PACKAGE_NAME_Debug_Arduino=IO.tar
+CND_PACKAGE_PATH_Debug_Arduino=dist/Debug_Arduino/Arduino_AVR-Windows/package/IO.tar
 #
 # include compiler specific variables
 #

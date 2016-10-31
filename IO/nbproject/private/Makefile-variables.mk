@@ -3,5 +3,7 @@
 #
 # NOCDDL
 #
-# Debug configuration
+# Debug_RPi configuration
 # Release configuration
+# Debug_RpiCross configuration
+# Debug_Arduino configuration

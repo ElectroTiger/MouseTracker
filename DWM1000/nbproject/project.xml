@@ -25,11 +25,15 @@
                 </confElem>
                 <confElem>
                     <name>Debug_Arduino</name>
-                    <type>1</type>
+                    <type>3</type>
                 </confElem>
                 <confElem>
                     <name>Debug_Raspbian</name>
-                    <type>1</type>
+                    <type>3</type>
+                </confElem>
+                <confElem>
+                    <name>Debug_Rpi_Cross</name>
+                    <type>3</type>
                 </confElem>
             </confList>
             <formatting>

@@ -9,14 +9,24 @@
             <header-extensions>h</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
-            <sourceRootList/>
+            <sourceRootList>
+                <sourceRootElem>wiringPiHeaders</sourceRootElem>
+            </sourceRootList>
             <confList>
                 <confElem>
-                    <name>Debug</name>
+                    <name>Debug_RPi</name>
                     <type>3</type>
                 </confElem>
                 <confElem>
                     <name>Release</name>
+                    <type>3</type>
+                </confElem>
+                <confElem>
+                    <name>Debug_RpiCross</name>
+                    <type>3</type>
+                </confElem>
+                <confElem>
+                    <name>Debug_Arduino</name>
                     <type>3</type>
                 </confElem>
             </confList>
