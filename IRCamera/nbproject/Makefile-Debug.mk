@@ -53,7 +53,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=-L/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/lib
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -66,12 +66,12 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera.exe: ${OBJECTFILES}
 ${OBJECTDIR}/cameraThread.o: cameraThread.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cameraThread.o cameraThread.cpp
+	$(COMPILE.cc) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/cameraThread.o cameraThread.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

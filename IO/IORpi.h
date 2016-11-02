@@ -59,7 +59,7 @@ namespace IO {
          * @param data The byte to be transfered.
          * @return The byte read back.
          */
-        char transfer(char data) override{
+        unsigned char transfer(unsigned char data) override{
             wiringPiSPIDataRW(channel, reinterpret_cast<unsigned char*>(&data), 1);
         }
         /**
@@ -67,8 +67,8 @@ namespace IO {
          * @param data The data to be transferred.
          * @return The data read back from the transfer.
          */
-        std::vector<char> transfer(const std::vector<char> &data) override {
-            std::vector<char> dataCopy(data);
+        std::vector<unsigned char> transfer(const std::vector<unsigned char> &data) override {
+            std::vector<unsigned char> dataCopy(data);
             wiringPiSPIDataRW(channel, reinterpret_cast<unsigned char*>(dataCopy.data()), data.size());
         }
         /**

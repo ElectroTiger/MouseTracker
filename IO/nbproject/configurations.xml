@@ -3,7 +3,6 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="f1" displayName="Header Files" projectFiles="true">
       <itemPath>IO.h</itemPath>
-      <itemPath>IOArduino.h</itemPath>
       <itemPath>IORpi.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -57,8 +56,6 @@
         </archiverTool>
       </compileType>
       <item path="IO.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="IOArduino.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="IORpi.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -127,8 +124,6 @@
       </compileType>
       <item path="IO.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="IOArduino.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="IORpi.h" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
@@ -186,8 +181,6 @@
         </archiverTool>
       </compileType>
       <item path="IO.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="IOArduino.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="IORpi.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -253,8 +246,6 @@
         </archiverTool>
       </compileType>
       <item path="IO.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="IOArduino.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="IORpi.h" ex="false" tool="3" flavor2="0">
       </item>

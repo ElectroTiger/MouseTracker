@@ -17,12 +17,14 @@
 #include <thread>
 #include <mutex>
 #include <fstream>
+#include <vector>
 
 class CameraThread {
 public:
     CameraThread();
     virtual ~CameraThread();
     // Functor operator allows class to be used where void function() would be used.
+    // This method is called when CameraThread is passed as an argument to something accepting a function pointer.
     void operator()(void);
     
 // Accessors to change camera settings
@@ -37,6 +39,8 @@ public:
     void setIsOn(bool b);
     /// Get whether the camera is on.
     bool getIsOn();
+    /// Get a the filenames of the videofiles that have completed recording.
+    std::vector<std::string> getCompletedFilenames();
 private:
     raspicam::RaspiCam raspicam;
     std::ofstream ofstream;
@@ -46,9 +50,16 @@ private:
     raspicam::RASPICAM_FORMAT format;
     uint16_t width;
     uint16_t height;
+    bool isOn;
+    Mode mode;
+    Resolution res;
+    std::vector<std::string> completedFileNames;
+    
     // Helper functions
 private:
     static std::string getCurrentTime();
+    void startRecording();
+    void stopRecording();
     
     
     

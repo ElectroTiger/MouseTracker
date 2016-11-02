@@ -13,6 +13,7 @@
 
 #include <cstdlib>
 #include "../IO/IORpi.h"
+#include "cameraThread.h"
 
 /*
  * 
