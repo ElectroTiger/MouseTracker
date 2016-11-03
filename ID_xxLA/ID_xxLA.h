@@ -17,21 +17,26 @@
 #include <SoftwareSerial.h>
 
 class ID_xxLA {
-    const unsigned char checksumLen = 2;
-    const unsigned char dataLen = 10;
+    // User interface code: Relevant to you!
 public:
+	/// Create an instance of the ID_xxLA class.
     ID_xxLA(int RXPin, int TXPin, int tagInRangePin);
-    ID_xxLA(const ID_xxLA& orig) = delete;
+
+    /// Read the 5-byte ID from the reader as a null-terminated char array.
+    /// So: Pass in an 6-byte long array of chars, like char data[6];
+    /// @returns true if the read is successful, and false if it is unsuccessful.
+    /// Unsuccessful read may occur beacuse tag is too far away, or because checksum did not match.
+    bool getID(char* buffer);
+
+    // Boilerplate code: You can ignore this.
+public:
+	ID_xxLA(const ID_xxLA& orig) = delete;
     virtual ~ID_xxLA(){};
-    void getID(char* buffer);
+    const unsigned char dataLen = 5;
 private:
-    void read(char* buffer);
-private:
-
-
     SoftwareSerial serial;
     int tagInRangePin;
-    unsigned char readChecksum[2];
+    unsigned char readChecksum;
 };
 
 #endif /* ID_XXLA_H */

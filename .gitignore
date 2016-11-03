@@ -29,3 +29,6 @@
 *.app
 *.d
 *.hex
+IO/nbproject/private/private.xml
+IO/nbproject/private/private.xml
+IRCamera/nbproject/private/private.xml
