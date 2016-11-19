@@ -21,7 +21,7 @@ FC=gfortran
 AS=avr-as
 
 # Macros
-CND_PLATFORM=Arduino_AVR-Windows
+CND_PLATFORM=Arduino-Windows
 CND_DLIB_EXT=dll
 CND_CONF=Debug
 CND_DISTDIR=dist
@@ -35,8 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/5c0/ID_xxLA.o \
-	${OBJECTDIR}/_ext/5c0/main.o
+	${OBJECTDIR}/_ext/5c0/main.o \
+	${OBJECTDIR}/_ext/511e4115/ID_xxLA.o
 
 
 # C Compiler Flags
@@ -63,15 +63,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/netbeans_files.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	avr-gcc -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/netbeans_files ${OBJECTFILES} ${LDLIBSOPTIONS} ${FLAGS_LINKER}
 
-${OBJECTDIR}/_ext/5c0/ID_xxLA.o: ../ID_xxLA.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/5c0
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -I${INCLUDE} -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/5c0/ID_xxLA.o ../ID_xxLA.cpp
-
 ${OBJECTDIR}/_ext/5c0/main.o: ../main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/5c0
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I${INCLUDE} -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/5c0/main.o ../main.cpp
+
+${OBJECTDIR}/_ext/511e4115/ID_xxLA.o: ../src/ID_xxLA.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I${INCLUDE} -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/ID_xxLA.o ../src/ID_xxLA.cpp
 
 # Subprojects
 .build-subprojects:

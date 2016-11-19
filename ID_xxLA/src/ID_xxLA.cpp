@@ -19,19 +19,21 @@ serial(RXPin, TXPin), tagInRangePin(tagInRangePin) {
 }
 
 bool ID_xxLA::getID(char* buffer) {
-    if (digitalRead(tagInRangePin)) {
+    if (digitalRead(tagInRangePin)) { // Branch where tag is in range.
         
-        // Two start bytes..
+        // Two start bytes, which are ignored.
         serial.read();
         serial.read();
         
-        // Read 5 bytes
+        // Read 5 bytes, which constitute the 40-bit tag.
         serial.readBytes(buffer, dataLen);
+        // Read the last byte, which constitutes the checksum.
         readChecksum = serial.read();
         
-        // One line feed, one newline, then three end bytes..
-        serial.read();
-        serial.read();
+        // One carriage return, one newline, then three end bytes.
+        bool isValid = true;
+        if (serial.read() != '\r') isValid = false;
+        if (serial.read() != '\n') isValid = false;
         serial.read();
         serial.read();
         serial.read();
@@ -43,12 +45,12 @@ bool ID_xxLA::getID(char* buffer) {
         } 
         // Null terminate the buffer.
         buffer[dataLen] = '\0';
-        if (dataXOR == readChecksum) {
+        if ((dataXOR == readChecksum) && isValid) {
             return true;
         } else {
             return false;
         }
-    } else {
+    } else { // Branch where tag is not in range.
         return false;
     }
 }

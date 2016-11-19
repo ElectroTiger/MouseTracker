@@ -7,13 +7,13 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
-CND_PLATFORM_Debug=Arduino_AVR-Windows
-CND_ARTIFACT_DIR_Debug=dist/Debug/Arduino_AVR-Windows
+CND_PLATFORM_Debug=Arduino-Windows
+CND_ARTIFACT_DIR_Debug=dist/Debug/Arduino-Windows
 CND_ARTIFACT_NAME_Debug=netbeans_files
-CND_ARTIFACT_PATH_Debug=dist/Debug/Arduino_AVR-Windows/netbeans_files
-CND_PACKAGE_DIR_Debug=dist/Debug/Arduino_AVR-Windows/package
+CND_ARTIFACT_PATH_Debug=dist/Debug/Arduino-Windows/netbeans_files
+CND_PACKAGE_DIR_Debug=dist/Debug/Arduino-Windows/package
 CND_PACKAGE_NAME_Debug=netbeansfiles.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Arduino_AVR-Windows/package/netbeansfiles.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/Arduino-Windows/package/netbeansfiles.tar
 # Release configuration
 CND_PLATFORM_Release=Cygwin-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows

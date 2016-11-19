@@ -1,6 +1,6 @@
 COM_PORT = COM3
 BAUD_RATE = 115200
-ARDUINO_VERSION = 167
+ARDUINO_VERSION = 1612
 ARDUINO_BASE_DIR = C:/Users/Developer/Documents/arduino-1.6.12
 INCLUDE_LIBS = Firmata;../hardware/arduino/avr/libraries/SoftwareSerial/src;SoftTimer/src;PciManager/src;
 ARDUINO_MODEL = atmega328p

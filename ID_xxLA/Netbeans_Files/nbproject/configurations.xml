@@ -4,7 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>../ID_xxLA.h</itemPath>
+      <itemPath>../src/ID_xxLA.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,7 +13,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>../ID_xxLA.cpp</itemPath>
+      <itemPath>../src/ID_xxLA.cpp</itemPath>
       <itemPath>../main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -35,7 +35,7 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>Arduino_AVR|WinAVR</compilerSet>
+        <compilerSet>Arduino|WinAVR</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -59,11 +59,11 @@
           <commandLine>${FLAGS_LINKER}</commandLine>
         </linkerTool>
       </compileType>
-      <item path="../ID_xxLA.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../ID_xxLA.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ID_xxLA.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ID_xxLA.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -86,11 +86,11 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="../ID_xxLA.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../ID_xxLA.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ID_xxLA.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ID_xxLA.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
