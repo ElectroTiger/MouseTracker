@@ -14,14 +14,14 @@ GREP=grep
 NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc
+CC=gcc-6.2.0
 CCC=g++
 CXX=g++
 FC=gfortran
-AS=as
+AS=gcc-ar-6.2.0
 
 # Macros
-CND_PLATFORM=GNU-Linux
+CND_PLATFORM=GNU-6.2.0-Linux
 CND_DLIB_EXT=so
 CND_CONF=Debug_Raspbian
 CND_DISTDIR=dist
@@ -52,8 +52,8 @@ TESTOBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-pedantic
-CXXFLAGS=-pedantic
+CCFLAGS=
+CXXFLAGS=
 
 # Fortran Compiler Flags
 FFLAGS=

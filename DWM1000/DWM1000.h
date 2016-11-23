@@ -20,20 +20,22 @@
 #include <vector>
 #include <memory>
 
+using namespace IO;
+
 class DWM1000 {
 public:
-    DWM1000(std::unique_ptr<IO::SPI> spi,
-            std::unique_ptr<IO::Pin> EXTnPin,
-            std::unique_ptr<IO::Pin> wakeupPin,
-            std::unique_ptr<IO::Pin> RSTnPin,
-            std::unique_ptr<IO::InterruptPin> IRQPin);
+    DWM1000(IO_T<SPIBase> spi,
+            IO_T<PinBase> EXTnPin,
+            IO_T<PinBase> wakeupPin,
+            IO_T<PinBase> RSTnPin,
+            IO_T<InterruptPinBase> IRQPin);
     DWM1000(const DWM1000& orig);
     virtual ~DWM1000();
 
     /// Transmit the data contained in the vector data.
-    void transmit(const std::vector<char> &data);
+    void transmit(const std::vector<byte> &data);
     /// Set the callback function upon receiving data from the DWM1000, which must return void and take an rvalue reference to a vector of chars. 
-    void setRXcallback(std::function<void(std::vector<char>&&)>);
+    void setRXcallback(std::function<void(std::vector<byte>&&)>);
 
     /// Set the state of the DWM1000 to be asleep or not.
     void setIsAsleep(const bool b);
@@ -152,14 +154,14 @@ protected:
      * @warning The subaddr + length should NEVER exceed the published length of the selected register file. 
      * @return A vector containing the read data.
      */
-    std::vector<char> read(const DWM1000::Register &regFileID, const uint16_t length, const uint32_t subaddr = 0);
+    std::vector<byte> read(const DWM1000::Register &regFileID, const uint16_t length, const uint32_t subaddr = 0);
     /**
      * @brief Write 'data' to regFileID starting at index subaddr, which defaults to zero.
      * @param regFileID The register file ID to write to.
      * @param data The data to write.
      * @param subaddr The index within the register file to write to.
      */
-    void write(const DWM1000::Register &regFileID, const std::vector<char> &data, const uint32_t subaddr = 0);
+    void write(const DWM1000::Register &regFileID, const std::vector<byte> &data, const uint32_t subaddr = 0);
 
     // Command routines
 protected:
@@ -170,19 +172,19 @@ protected:
     // Pins
 private:
     /// The SPI object that the DWM1000 module uses to access the SPI bus.
-    std::unique_ptr<IO::SPI> spi;
+    IO_T<IO::SPIBase> spi;
     /// Input from DWM1000: External device enable: Is asserted high during DWM1000 wakeup process, and held high until the DWM1000 enters sleep mode.
-    std::unique_ptr<IO::Pin> EXTnPin;
+    IO_T<PinBase> EXTnPin;
     /// Output to DWM1000: When asserted to active high, this pin brings the DW1000 out of sleep or deepsleep. Should be tied to ground if not in use.
-    std::unique_ptr<IO::Pin> wakeupPin;
+    IO_T<PinBase> wakeupPin;
     /// Output to DWM1000: May be pulled low to reset the DWM1000. Otherwise, it should be left floating. 
-    std::unique_ptr<IO::Pin> RSTnPin;
+    IO_T<PinBase> RSTnPin;
     /// Input from DWM1000: Interrupt line which is asserted under conditions which may be programmed.
-    std::unique_ptr<IO::InterruptPin> IRQPin;
+    IO_T<InterruptPinBase> IRQPin;
 
     // Instance variables
 public:
-    std::function<void(std::vector<char>&&)> rxCallback;
+    std::function<void(std::vector<byte>&&)> rxCallback;
     
     
 };

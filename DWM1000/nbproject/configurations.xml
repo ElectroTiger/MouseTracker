@@ -177,7 +177,7 @@
     </conf>
     <conf name="Debug_Raspbian" type="3">
       <toolsSet>
-        <compilerSet>GNU|GNU</compilerSet>
+        <compilerSet>GNU-6.2.0|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>true</rebuildPropChanged>
       </toolsSet>
@@ -188,7 +188,6 @@
         <ccTool>
           <standard>11</standard>
           <commandlineTool>g++</commandlineTool>
-          <commandLine>-pedantic</commandLine>
           <warningLevel>3</warningLevel>
         </ccTool>
         <archiverTool>

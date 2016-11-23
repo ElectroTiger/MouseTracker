@@ -14,7 +14,7 @@
 // This directive allows allows this file to compile only if WiringPi exists.
 #pragma once
 
-#if __has_include("wiringPi.h")
+//#if __has_include("wiringPi.h")
 #include "IO.h"
 #include "wiringPi.h"
 #include "wiringPiSPI.h"
@@ -59,17 +59,17 @@ namespace IO {
          * @param data The byte to be transfered.
          * @return The byte read back.
          */
-        unsigned char transfer(unsigned char data) override{
-            wiringPiSPIDataRW(channel, reinterpret_cast<unsigned char*>(&data), 1);
+        byte transfer(byte data) override{
+            wiringPiSPIDataRW(channel, reinterpret_cast<byte*>(&data), 1);
         }
         /**
          * @brief Transfer an array (technically a vector) of data.
          * @param data The data to be transferred.
          * @return The data read back from the transfer.
          */
-        std::vector<unsigned char> transfer(const std::vector<unsigned char> &data) override {
-            std::vector<unsigned char> dataCopy(data);
-            wiringPiSPIDataRW(channel, reinterpret_cast<unsigned char*>(dataCopy.data()), data.size());
+        std::vector<byte> transfer(const std::vector<byte> &data) override {
+            std::vector<byte> dataCopy(data);
+            wiringPiSPIDataRW(channel, reinterpret_cast<byte*>(dataCopy.data()), data.size());
         }
         /**
          * @brief Ground the SPI lines to minimize power consumption, and to 
@@ -119,7 +119,7 @@ namespace IO {
         }
     };
 }
-#endif
+//#endif
 #pragma once
 
 

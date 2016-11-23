@@ -49,3 +49,7 @@ doc/Appendix_RpiModelB_HeadlessSetup.blg
 doc/Appendix_RpiModelB_HeadlessSetup.run.xml
 ID_xxLA/Netbeans_Files/nbproject/private/private.xml
 doc/Appendix_RpiModelB_HeadlessSetup.toc
+
+DWM1000/doc
+DWM1000/nbproject/private
+IO/nbproject/private

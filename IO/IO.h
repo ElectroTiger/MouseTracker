@@ -21,7 +21,9 @@
 #include <functional>
 
 namespace IO {
-    
+    template<class T>
+    using IO_T = std::unique_ptr<T>;
+    using byte = unsigned char;
     /**
      * @brief This class is used to provide other system functionalities.
      * Provides a singleton method that is used to ensure any IO initialization that needs to occur should occur.
@@ -79,13 +81,13 @@ namespace IO {
          * @param data The byte to be transfered.
          * @return The byte read back.
          */
-        virtual unsigned char transfer(unsigned char data) = 0;
+        virtual byte transfer(byte data) = 0;
         /**
          * @brief Transfer an array (technically a vector) of data.
          * @param data The data to be transferred.
          * @return The data read back from the transfer.
          */
-        virtual std::vector<unsigned char> transfer(const std::vector<unsigned char> &data) = 0;
+        virtual std::vector<byte> transfer(const std::vector<byte> &data) = 0;
         /**
          * @brief Ground the SPI lines to minimize power consumption, and to 
          * ensure that the line is not in use.
@@ -103,15 +105,15 @@ namespace IO {
         /// Returns the number of bytes available to read.
         virtual uint32_t available() = 0;
         /// Read one byte from UART.
-        virtual unsigned char read() = 0;
+        virtual byte read() = 0;
         /// Read "length" bytes from UART.
-        virtual std::vector<unsigned char> read(uint32_t length) = 0;
+        virtual std::vector<byte> read(uint32_t length) = 0;
         /// Read from UART until the "terminator" byte is detected.
-        virtual std::vector<unsigned char> read(unsigned char terminator, uint32_t length = UINT32_MAX) = 0;
+        virtual std::vector<byte> read(byte terminator, uint32_t length = UINT32_MAX) = 0;
         /// Write a byte to UART.
-        virtual void write(unsigned char data) = 0;
+        virtual void write(byte data) = 0;
         /// Write many bytes to UART.
-        virtual void write(const std::vector<unsigned char> &data) = 0;
+        virtual void write(const std::vector<byte> &data) = 0;
     };
     
 }

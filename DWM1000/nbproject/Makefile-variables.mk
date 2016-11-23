@@ -31,13 +31,13 @@ CND_PACKAGE_DIR_Debug_Arduino=dist/Debug_Arduino/GNU-Linux/package
 CND_PACKAGE_NAME_Debug_Arduino=DWM1000.tar
 CND_PACKAGE_PATH_Debug_Arduino=dist/Debug_Arduino/GNU-Linux/package/DWM1000.tar
 # Debug_Raspbian configuration
-CND_PLATFORM_Debug_Raspbian=GNU-Linux
-CND_ARTIFACT_DIR_Debug_Raspbian=dist/Debug_Raspbian/GNU-Linux
+CND_PLATFORM_Debug_Raspbian=GNU-6.2.0-Linux
+CND_ARTIFACT_DIR_Debug_Raspbian=dist/Debug_Raspbian/GNU-6.2.0-Linux
 CND_ARTIFACT_NAME_Debug_Raspbian=libdwm1000.a
-CND_ARTIFACT_PATH_Debug_Raspbian=dist/Debug_Raspbian/GNU-Linux/libdwm1000.a
-CND_PACKAGE_DIR_Debug_Raspbian=dist/Debug_Raspbian/GNU-Linux/package
+CND_ARTIFACT_PATH_Debug_Raspbian=dist/Debug_Raspbian/GNU-6.2.0-Linux/libdwm1000.a
+CND_PACKAGE_DIR_Debug_Raspbian=dist/Debug_Raspbian/GNU-6.2.0-Linux/package
 CND_PACKAGE_NAME_Debug_Raspbian=DWM1000.tar
-CND_PACKAGE_PATH_Debug_Raspbian=dist/Debug_Raspbian/GNU-Linux/package/DWM1000.tar
+CND_PACKAGE_PATH_Debug_Raspbian=dist/Debug_Raspbian/GNU-6.2.0-Linux/package/DWM1000.tar
 # Debug_Rpi_Cross configuration
 CND_PLATFORM_Debug_Rpi_Cross=SysGCC_RPi-Windows
 CND_ARTIFACT_DIR_Debug_Rpi_Cross=dist/Debug_Rpi_Cross/SysGCC_RPi-Windows

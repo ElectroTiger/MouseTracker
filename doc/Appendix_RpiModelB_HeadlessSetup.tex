@@ -180,9 +180,56 @@
 			\subitem Reboot your pi with \verb|sudo reboot|.
 			\subitem Restart the VNC server with \verb|vncserver| and connect to it using the VNCViewer program on your PC. The resolution should have increased to what you set it to.
 			
+			
 		\end{itemize}
 		
-		\section{Installer Dee}
+		\section{Optional: Install Development Toolchains}
+		\subsection{Install gcc 6.2}
+		\url{https://solarianprogrammer.com/2016/06/29/raspberry-pi-raspbian-compiling-gcc-6/}
+		\begin{verbatim}
+			sudo apt-get update
+			sudo apt-get upgrade
+			cd ~
+			wget mirrors-usa.go-parts.com/gcc/releases/gcc-6.2.0/gcc-6.2.0.tar.bz2
+			tar xf gcc-6.2.0.tar.bz2
+			cd gcc-6.2.0
+			contrib/download_prerequisites
+			cd ~
+			mkdir build && cd build
+			../gcc-6.2.0/configure -v --enable-languages=c,c++ --prefix=/usr/local/gcc-6.2.0 --program-suffix=-6.2.0 --with-arch=armv6 --with-fpu=vfp --with-float=hard --build=arm-linux-gnueabihf --host=arm-linux-gnueabihf --target=arm-linux-gnueabihf
+			
+			vncserver -kill :1
+			
+			
+		\end{verbatim}
+		
+		Modify swap file as in link, then:
+		
+		\begin{verbatim}
+		sudo /etc/init.d/dphys-swapfile stop
+		sudo /etc/init.d/dphys-swapfile start
+
+	cd ~
+	cd build
+	make -j 4
+		\end{verbatim}
+		
+		\subsection{Install QT 5.7}
+		Run:
+		\begin{verbatim}
+			sudo apt-get update
+			sudo apt-get upgrade
+			sudo apt-get install libfontconfig1-dev libdbus-1-dev libfreetype6-dev libudev-dev libicu-dev libsqlite3-dev libxslt1-dev libssl-dev libasound2-dev libavcodec-dev libavformat-dev libswscale-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev gstreamer-tools gstreamer0.10-plugins-good gstreamer0.10-plugins-bad libraspberrypi-dev libpulse-dev libx11-dev libglib2.0-dev libcups2-dev freetds-dev libsqlite0-dev libpq-dev libiodbc2-dev libmysqlclient-dev firebird-dev libpng12-dev libjpeg9-dev libgst-dev libxext-dev libxcb1 libxcb1-dev libx11-xcb1 libx11-xcb-dev libxcb-keysyms1 libxcb-keysyms1-dev libxcb-image0 libxcb-image0-dev libxcb-shm0 libxcb-shm0-dev libxcb-icccm4 libxcb-icccm4-dev libxcb-render-util0 libxcb-render-util0-dev libxcb-xfixes0-dev libxrender-dev libxcb-shape0-dev libxcb-randr0-dev libxcb-glx0-dev libxi-dev libdrm-dev libssl-dev libxcb-sync1 libxcb-sync-dev libxcb-xinerama0 libxcb-xinerama0-dev libjpeg62-turbo-dev
+			
+		\end{verbatim}
+		
+		\begin{verbatim}
+			sudo apt-get update
+			sudo apt-get ugrade
+			sudo apt-get install qtcreator qt5-default qt5-qmake qtbase5-dev-tools
+		\end{verbatim}
+		
+		
 		
 		
 

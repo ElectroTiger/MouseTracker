@@ -13,12 +13,12 @@
 
 #include "DWM1000.h"
 
-
-DWM1000::DWM1000(std::unique_ptr<IO::SPI> spi, 
-            std::unique_ptr<IO::Pin> EXTnPin, 
-            std::unique_ptr<IO::Pin> wakeupPin, 
-            std::unique_ptr<IO::Pin> RSTnPin, 
-            std::unique_ptr<IO::InterruptPin> IRQPin) :
+using namespace IO;
+DWM1000::DWM1000(IO_T<SPIBase> spi, 
+            IO_T<PinBase> EXTnPin, 
+            IO_T<PinBase> wakeupPin, 
+            IO_T<PinBase> RSTnPin, 
+            IO_T<InterruptPinBase> IRQPin) :
 spi(std::move(spi)), EXTnPin(std::move(EXTnPin)), wakeupPin(std::move(wakeupPin)), RSTnPin(std::move(RSTnPin)), IRQPin(std::move(IRQPin)) 
 {
     
@@ -31,11 +31,11 @@ DWM1000::~DWM1000() {
 }
 
 /// Transmit the data contained in the vector data.
-void DWM1000::transmit(const std::vector<char> &data) {
+void DWM1000::transmit(const std::vector<byte> &data) {
     write(TX_BUFFER, data);
 }
 /// Set the callback function upon receiving data from the DWM1000, which must return void and take an rvalue reference to a vector of chars. 
-void DWM1000::setRXcallback(std::function<void(std::vector<char>&&)> cb) {
+void DWM1000::setRXcallback(std::function<void(std::vector<byte>&&)> cb) {
     rxCallback = cb;
 }
 
@@ -49,8 +49,8 @@ bool DWM1000::getIsAsleep() {
 }
 
 
-std::vector<char> DWM1000::read(const DWM1000::Register &regFileID, const uint16_t length, const uint32_t subaddr) {
-    std::vector<char> transmission;
+std::vector<byte> DWM1000::read(const DWM1000::Register &regFileID, const uint16_t length, const uint32_t subaddr) {
+    std::vector<byte> transmission;
     if (subaddr == 0) {
         transmission.push_back(0b10000000 | regFileID.ID);
     } else if (subaddr < 128) {
@@ -61,13 +61,13 @@ std::vector<char> DWM1000::read(const DWM1000::Register &regFileID, const uint16
         transmission.push_back(0b10000000 | (subaddr & 0b1111111));
         transmission.push_back(subaddr & ~(0b1111111));
         }
-    std::vector<char> response = spi->transfer(std::move(transmission));
+    std::vector<byte> response = spi->transfer(transmission);
     return response;
 }
 
-void DWM1000::write(const DWM1000::Register &regFileID, const std::vector<char> &data, const uint32_t subaddr) {
+void DWM1000::write(const DWM1000::Register &regFileID, const std::vector<byte> &data, const uint32_t subaddr) {
     
-    std::vector<char> transmission;
+    std::vector<byte> transmission;
     if (subaddr == 0) {
         transmission.push_back(0b10000000 | regFileID.ID);
     } else if (subaddr < 128) {
@@ -79,6 +79,6 @@ void DWM1000::write(const DWM1000::Register &regFileID, const std::vector<char> 
         transmission.push_back(subaddr & ~(0b1111111));
         }
     transmission.insert(transmission.end(), data.begin(), data.end());
-    spi->transfer(std::move(transmission));
+    spi->transfer(transmission);
 }
 
