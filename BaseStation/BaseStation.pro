@@ -20,3 +20,5 @@ HEADERS  += mainwindow.h \
     ../DWM1000/DWM1000.h
 
 FORMS    += mainwindow.ui
+
+CONFIG += c++11
