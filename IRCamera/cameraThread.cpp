@@ -6,7 +6,7 @@
 
 // Function called from thread which opens the camera, records from it, and 
 
-#include "cameraThread.h"
+#include "CameraThread.h"
 #include <raspicam/raspicam.h>
 #include <chrono>
 #include <ctime>
