@@ -36,11 +36,15 @@ public:
     void transmit(const std::vector<byte> &data);
     /// Set the callback function upon receiving data from the DWM1000, which must return void and take an rvalue reference to a vector of chars. 
     void setRXcallback(std::function<void(std::vector<byte>&&)>);
-
     /// Set the state of the DWM1000 to be asleep or not.
+    
     void setIsAsleep(const bool b);
     /// Get the state of whether the DWM1000 is asleep or not.
     bool getIsAsleep();
+    
+    
+    enum ChanNum {ONE = 1, TWO = 2, THREE = 3, FOUR = 4, FIVE = 5, SEVEN = 7};
+    void setChannel(ChanNum number);
     
 public:
     

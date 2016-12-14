@@ -4,7 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>cameraThread.h</itemPath>
+      <itemPath>CameraThread.h</itemPath>
+      <itemPath>DWM1000Thread.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,7 +14,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>cameraThread.cpp</itemPath>
+      <itemPath>CameraThread.cpp</itemPath>
+      <itemPath>DWM1000Thread.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -57,6 +59,7 @@
             <pElem>C:/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf</pElem>
             <pElem>C:/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include</pElem>
           </incDir>
+          <commandLine>-pthread</commandLine>
         </ccTool>
         <linkerTool>
           <linkerAddLib>
@@ -64,9 +67,13 @@
           </linkerAddLib>
         </linkerTool>
       </compileType>
-      <item path="cameraThread.cpp" ex="false" tool="1" flavor2="0">
+      <item path="CameraThread.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="cameraThread.h" ex="false" tool="3" flavor2="0">
+      <item path="CameraThread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DWM1000Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DWM1000Thread.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -92,9 +99,13 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="cameraThread.cpp" ex="false" tool="1" flavor2="0">
+      <item path="CameraThread.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="cameraThread.h" ex="false" tool="3" flavor2="0">
+      <item path="CameraThread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DWM1000Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DWM1000Thread.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

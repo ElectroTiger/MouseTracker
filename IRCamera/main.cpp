@@ -13,12 +13,15 @@
 
 #include <cstdlib>
 #include "../IO/IORpi.h"
-#include "cameraThread.h"
+#include <thread>
+#include "CameraThread.h"
 
 /*
  * 
  */
 int main(int argc, char** argv) {
+    CameraThread cameraThreadObj();
+    //std::thread cameraThread(cameraThreadObj);
 
     return 0;
 }
