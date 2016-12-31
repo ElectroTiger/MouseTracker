@@ -74,27 +74,13 @@ Thumbs.db
 *.app
 *.d
 *.hex
-IO/nbproject/private/private.xml
-IO/nbproject/private/private.xml
-IRCamera/nbproject/private/private.xml
-ID_xxLA/Netbeans_Files/nbproject/private
-ID_xxLA/Netbeans_Files/nbproject/private/Makefile-variables.mk
-DWM1000/nbproject/private/private.xml
-ID_xxLA/Netbeans_Files/nbproject/private/private.xml
-ID_xxLA/Netbeans_Files/nbproject/private/private.xml
 *.aux
 *.log
-doc/Appendix_RpiModelB_HeadlessSetup.ver
-ID_xxLA/Netbeans_Files/nbproject/private/private.xml
 *.hst
-doc/Appendix_RpiModelB_HeadlessSetup.synctex.gz
-doc/Appendix_RpiModelB_HeadlessSetup.bbl
-doc/Appendix_RpiModelB_HeadlessSetup.bcf
-doc/Appendix_RpiModelB_HeadlessSetup.blg
-doc/Appendix_RpiModelB_HeadlessSetup.run.xml
-ID_xxLA/Netbeans_Files/nbproject/private/private.xml
-doc/Appendix_RpiModelB_HeadlessSetup.toc
 
-DWM1000/doc
+# Private NetbeanProject directories
+IRCamera/nbproject/private
+ID_xxLA/Netbeans_Files/nbproject/private
 DWM1000/nbproject/private
+DWM1000/doc
 IO/nbproject/private

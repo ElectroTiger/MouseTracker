@@ -12,16 +12,18 @@
  */
 
 #include <cstdlib>
-#include "../IO/IORpi.h"
+//#include "../IO/IORpi.h"
 #include <thread>
+#include <functional>
 #include "CameraThread.h"
 
 /*
  * 
  */
 int main(int argc, char** argv) {
-    CameraThread cameraThreadObj();
-    //std::thread cameraThread(cameraThreadObj);
+    CameraThread cameraThreadObj;
+    cameraThreadObj();
+    std::thread cameraThread(std::ref(cameraThreadObj));
 
     return 0;
 }

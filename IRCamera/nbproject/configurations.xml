@@ -34,7 +34,7 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>SysGCC_RPi|MinGW</compilerSet>
+        <compilerSet>GNU-6.2.0|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -98,6 +98,39 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+      </compileType>
+      <item path="CameraThread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CameraThread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DWM1000Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DWM1000Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Debug-RPi" type="1">
+      <toolsSet>
+        <compilerSet>GNU-6.2.0|GNU</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <standard>10</standard>
+        </cTool>
+        <ccTool>
+          <standard>11</standard>
+          <commandlineTool>g++-6.2.0</commandlineTool>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>raspicam</linkerLibLibItem>
+            <linkerLibLibItem>raspicam_cv</linkerLibLibItem>
+            <linkerLibLibItem>pthread</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
       <item path="CameraThread.cpp" ex="false" tool="1" flavor2="0">
       </item>

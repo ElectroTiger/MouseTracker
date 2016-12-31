@@ -14,15 +14,15 @@ GREP=grep
 NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=arm-linux-gnueabihf-gcc
-CCC=arm-linux-gnueabihf-g++
-CXX=arm-linux-gnueabihf-g++
+CC=gcc-6.2.0
+CCC=cpp-6.2.0
+CXX=cpp-6.2.0
 FC=gfortran
-AS=arm-linux-gnueabihf-as
+AS=gcc-ar-6.2.0
 
 # Macros
-CND_PLATFORM=SysGCC_RPi-Windows
-CND_DLIB_EXT=dll
+CND_PLATFORM=GNU-6.2.0-Linux
+CND_DLIB_EXT=so
 CND_CONF=Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -58,9 +58,9 @@ LDLIBSOPTIONS=-L/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/lib
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera ${OBJECTFILES} ${LDLIBSOPTIONS}
 
@@ -85,7 +85,7 @@ ${OBJECTDIR}/main.o: main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera.exe
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera
 
 # Subprojects
 .clean-subprojects:
