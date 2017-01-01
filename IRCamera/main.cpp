@@ -24,6 +24,9 @@ int main(int argc, char** argv) {
     CameraThread cameraThreadObj;
     cameraThreadObj();
     std::thread cameraThread(std::ref(cameraThreadObj));
+    while(true) {
+        
+    }
 
     return 0;
 }

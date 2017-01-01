@@ -123,12 +123,29 @@
         <ccTool>
           <standard>11</standard>
           <commandlineTool>g++-6.2.0</commandlineTool>
+          <commandLine>-Wall -pedantic</commandLine>
+          <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>raspicam</linkerLibLibItem>
             <linkerLibLibItem>raspicam_cv</linkerLibLibItem>
             <linkerLibLibItem>pthread</linkerLibLibItem>
+            <linkerLibLibItem>opencv_core</linkerLibLibItem>
+            <linkerLibLibItem>opencv_imgcodecs</linkerLibLibItem>
+            <linkerLibLibItem>opencv_videoio</linkerLibLibItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../IO"
+                            CT="3"
+                            CN="Debug_RPi"
+                            AC="true"
+                            BL="true"
+                            WD="../IO"
+                            BC="${MAKE}  -f Makefile CONF=Debug_RPi"
+                            CC="${MAKE}  -f Makefile CONF=Debug_RPi clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libio.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

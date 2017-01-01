@@ -44,13 +44,17 @@
   <confs>
     <conf name="Debug_RPi" type="3">
       <toolsSet>
-        <compilerSet>GNU|GNU</compilerSet>
+        <compilerSet>GNU-6.2.0|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <standard>10</standard>
+        </cTool>
         <ccTool>
-          <standard>8</standard>
+          <standard>11</standard>
+          <commandLine>-Wall -pendantic</commandLine>
         </ccTool>
         <archiverTool>
         </archiverTool>

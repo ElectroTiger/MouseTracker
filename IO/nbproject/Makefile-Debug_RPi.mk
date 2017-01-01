@@ -14,14 +14,14 @@ GREP=grep
 NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc
-CCC=g++
-CXX=g++
+CC=gcc-6.2.0
+CCC=cpp-6.2.0
+CXX=cpp-6.2.0
 FC=gfortran
-AS=as
+AS=gcc-ar-6.2.0
 
 # Macros
-CND_PLATFORM=GNU-Linux
+CND_PLATFORM=GNU-6.2.0-Linux
 CND_DLIB_EXT=so
 CND_CONF=Debug_RPi
 CND_DISTDIR=dist
@@ -53,8 +53,8 @@ TESTOBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-Wall -pendantic
+CXXFLAGS=-Wall -pendantic
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -94,13 +94,13 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/wiringPiHeaders/tests/RpiSPITest.o ${OBJECTF
 ${TESTDIR}/wiringPiHeaders/tests/RpiGPIOTest.o: wiringPiHeaders/tests/RpiGPIOTest.cpp 
 	${MKDIR} -p ${TESTDIR}/wiringPiHeaders/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/wiringPiHeaders/tests/RpiGPIOTest.o wiringPiHeaders/tests/RpiGPIOTest.cpp
+	$(COMPILE.cc) -g -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${TESTDIR}/wiringPiHeaders/tests/RpiGPIOTest.o wiringPiHeaders/tests/RpiGPIOTest.cpp
 
 
 ${TESTDIR}/wiringPiHeaders/tests/RpiSPITest.o: wiringPiHeaders/tests/RpiSPITest.cpp 
 	${MKDIR} -p ${TESTDIR}/wiringPiHeaders/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/wiringPiHeaders/tests/RpiSPITest.o wiringPiHeaders/tests/RpiSPITest.cpp
+	$(COMPILE.cc) -g -I. -std=c++14 -MMD -MP -MF "$@.d" -o ${TESTDIR}/wiringPiHeaders/tests/RpiSPITest.o wiringPiHeaders/tests/RpiSPITest.cpp
 
 
 # Run Test Targets

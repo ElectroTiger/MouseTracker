@@ -23,22 +23,48 @@ class CameraThread {
 public:
     CameraThread();
     CameraThread(const CameraThread&) = delete; // No copies allowed.
-    //CameraThread& operator=(const CameraThread&) = delete; // No self assignment.
     
     virtual ~CameraThread();
     // Functor operator allows class to be used where void function() would be used.
     // This method is called when CameraThread is passed as an argument to something accepting a function pointer.
     void operator()();
     
-// Accessors to change camera settings
-    
 public: 
     // Structure which encapsulates camera settings.
     struct Settings {
+        /// Capture width in pixels.
         uint16_t width;
+        /// Capture height in pixels
         uint16_t height;
+        /// Capture format as grayscale or color.
+        bool isColor;
+        /// Brightness between 0 and 255
+        uint8_t brightness;
+        /// Contrast between 0 and 255
+        uint8_t contrast;
+        /// Saturation between 0 and 255
+        uint8_t saturation;
+        /// Gain (iso) between 0 and 255.
+        uint8_t gain;
+        /// Shutter speed between 1 and 255, 0 for auto.
+        uint8_t exposure;
+        /// White Balance Red between 1 and 255, 0 for auto.
+        uint8_t whiteBalanceRed;
+        /// White Balance Blue between 1 and 255, 0 for auto.
+        uint8_t whiteBalanceBlue;
+        /// Camera capture state as off, video, or image.
         enum State {OFF, VIDEO, IMAGE} state;
     };
+    
+    /// Default settings used when an instance of CameraThread is created.
+    static constexpr Settings defaultSettings{
+            640U, 480U, 
+            true, 
+            127, 127, 127, 
+            0, 0, 0, 
+            Settings::OFF
+    };
+
     
 public:
     Settings getSettings();
@@ -46,7 +72,6 @@ public:
     std::vector<std::string> getCompletedFilenames();
     
 private:
-    std::ofstream ofstream;
     raspicam::RaspiCam_Cv camera;
     
     // Camera settings which may be accessed from the outside.
