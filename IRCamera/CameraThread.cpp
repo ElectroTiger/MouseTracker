@@ -38,21 +38,23 @@ std::string CameraThread::getCurrentTime(void) {
 
 }
 
-void CameraThread::startRecording() {
-
-}
-
-void CameraThread::stopRecording() {
-
-}
-
 CameraThread::CameraThread() :
-settings (defaultSettings) {
-
+settings (defaultSettings), terminateNow (ATOMIC_FLAG_INIT) {
+    
 }
 
 CameraThread::~CameraThread() {
+    terminate();
+}
 
+void CameraThread::start() {
+    
+}
+
+void CameraThread::terminate() {
+    //std::lock_guard<std::mutex> lock(settingsMutex);
+    terminateNow.test_and_set(std::memory_order_release);
+    //settingscv.notify_one();
 }
 
 void CameraThread::operator()() {
@@ -60,12 +62,14 @@ void CameraThread::operator()() {
 
     /* Initialize the camera*/
     
-    enum ThreadState {OFF, OPENVIDEO, VIDEO, CLOSEVIDEO, CAMERA} state = OFF;
-    while (true) {
-        std::lock_guard<std::mutex> lock(settingsMutex);
-        
-        cv::VideoWriter writer;
-        cv::Mat frame;
+    cv::VideoWriter writer;
+    cv::Mat frame;
+    std::string filename;
+    enum ThreadState {OFF, OPENVIDEO, VIDEO, CLOSEVIDEO, CAMERA, TERMINATE} state = OFF;
+    bool terminate = false;
+    while (!terminate) {
+        // Unique lock is necessary because std::condition_variable requires it as input.
+        std::unique_lock<std::mutex> lock(settingsMutex); 
         switch(state) {
             case OFF: {
                 // Release the camera and writer in case we arrived here due to an exception.
@@ -75,8 +79,23 @@ void CameraThread::operator()() {
                 if (writer.isOpened()) {
                     writer.release();
                 }
+                if(terminateNow.test_and_set(std::memory_order_consume)) {
+                    state = TERMINATE;
+                    continue;
+                }
                 // Wait on a condition variable.
-                
+                settingscv.wait(lock);
+                switch(settings.state) {
+                    case Settings::OFF:
+                        state = OFF;
+                        break;
+                    case Settings::VIDEO:
+                        state = OPENVIDEO;
+                        break;
+                    case Settings::IMAGE:
+                        state = CAMERA;
+                        break;
+                }
                 break;
             }
                 
@@ -89,7 +108,7 @@ void CameraThread::operator()() {
                 }
                 
                 // Prepare settings for the video writer.
-                std::string filename = getCurrentTime() + ".avi"; // Filename of video output.
+                filename = getCurrentTime() + ".avi"; // Filename of video output.
                 int codec = CV_FOURCC('M', 'J', 'P', 'G'); // Codec
                 double fps = 24.0;
                 cv::Size size((int) camera.get(CV_CAP_PROP_FRAME_WIDTH),   
@@ -107,7 +126,13 @@ void CameraThread::operator()() {
             }
                 
             case VIDEO: {
-                // Loop to grab frames and write them.
+
+                // Stop capturing video if told to.
+                if(terminateNow.test_and_set(std::memory_order_consume) || settings.state != Settings::VIDEO) {
+                    state = CLOSEVIDEO;
+                }
+                
+                // Acquire a frame and write it.
                 if(!camera.grab()) {
                     throw std::runtime_error("Frame grab failed. Writing captured video.");
                     state = CLOSEVIDEO;
@@ -115,12 +140,14 @@ void CameraThread::operator()() {
                 }
                 camera.retrieve(frame);
                 writer.write(frame);
+                
                 break;
             }
                 
             case CLOSEVIDEO: {
                 camera.release();
                 writer.release();
+                completedFileNames.push_back(filename);
                 state = OFF;
                 break;
             }
@@ -142,12 +169,23 @@ void CameraThread::operator()() {
                 camera.retrieve(frame);
                 
                 // Write the image.
-                std::string filename = getCurrentTime() + ".avi";
+                filename = getCurrentTime() + ".png";
+                try {
                 imwrite(filename, frame); // This may throw an exception.
+                } catch(std::exception e) {
+                    std::cerr << e.what() << std::endl;
+                    throw;
+                }
+                completedFileNames.push_back(filename);
                 
                 // Release the camera.
                 camera.release();
                 state = OFF;
+                break;
+            }
+            
+            case TERMINATE: {
+                terminate = true;
                 break;
             }
         }
@@ -161,12 +199,11 @@ CameraThread::Settings CameraThread::getSettings() {
 
 void CameraThread::setSettings(Settings newSettings) {
     std::lock_guard<std::mutex> lock(settingsMutex);
-    // Terminate the current recording or capture if it is still running.
-    if (settings.state != CameraThread::Settings::OFF) {
-        
-    }
+    settings = newSettings;
+    settingscv.notify_one();
 }
 
 std::vector<std::string> CameraThread::getCompletedFilenames() {
+    std::lock_guard<std::mutex> lock(settingsMutex);
     return completedFileNames;
 }

@@ -18,12 +18,16 @@
 #include <fstream>
 #include <vector>
 #include <raspicam/raspicam_cv.h>
+#include <condition_variable>
 
 class CameraThread {
 public:
     CameraThread();
     CameraThread(const CameraThread&) = delete; // No copies allowed.
-    
+    // Starts the thread.
+    void start();
+    // Terminates video capture (if necessary) and halts the thread.
+    void terminate();
     virtual ~CameraThread();
     // Functor operator allows class to be used where void function() would be used.
     // This method is called when CameraThread is passed as an argument to something accepting a function pointer.
@@ -74,17 +78,19 @@ public:
 private:
     raspicam::RaspiCam_Cv camera;
     
+    
     // Camera settings which may be accessed from the outside.
 private:
     mutable std::mutex settingsMutex;
-    std::vector<std::string> completedFileNames;
+    std::condition_variable settingscv;
     Settings settings;
+    std::vector<std::string> completedFileNames;
+    std::atomic_flag terminateNow;
+    std::thread thread;
     
     // Helper functions
 private:
     static std::string getCurrentTime();
-    void startRecording();
-    void stopRecording();
     
     
     
