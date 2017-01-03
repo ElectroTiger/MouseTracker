@@ -23,15 +23,16 @@
  */
 int main(int argc, char** argv) {
     CameraThread cameraThreadObj;
-    std::thread cameraThread(std::ref(cameraThreadObj));
     std::cout << "Starting program" << std::endl;
     // Testing: Activate the camera to take an image.
-    CameraThread::Settings settings = cameraThreadObj.getSettings();
-    settings.state = CameraThread::Settings::IMAGE;
-    cameraThreadObj.setSettings(settings);
-    std::this_thread::yield();
-    cameraThreadObj.terminate();
-    cameraThread.join();
+//    CameraThread::Settings settings = cameraThreadObj.getSettings();
+//    settings.state = CameraThread::Settings::IMAGE;
+//    cameraThreadObj.setSettings(settings);
+//    std::this_thread::yield();
+    //cameraThreadObj.takePicture();
+    cameraThreadObj.setVideoOn(true);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    cameraThreadObj.setVideoOn(false);
     auto filenames = cameraThreadObj.getCompletedFilenames();
     for (auto&& filename : filenames) {
         std::cout << filename << std::endl;

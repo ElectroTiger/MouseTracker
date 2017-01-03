@@ -19,19 +19,17 @@
 #include <vector>
 #include <raspicam/raspicam_cv.h>
 #include <condition_variable>
+#include <atomic>
 
 class CameraThread {
 public:
     CameraThread();
     CameraThread(const CameraThread&) = delete; // No copies allowed.
-    // Starts the thread.
-    void start();
-    // Terminates video capture (if necessary) and halts the thread.
-    void terminate();
     virtual ~CameraThread();
+private:
     // Functor operator allows class to be used where void function() would be used.
     // This method is called when CameraThread is passed as an argument to something accepting a function pointer.
-    void operator()();
+    void threadFunc();
     
 public: 
     // Structure which encapsulates camera settings.
@@ -56,42 +54,50 @@ public:
         uint8_t whiteBalanceRed;
         /// White Balance Blue between 1 and 255, 0 for auto.
         uint8_t whiteBalanceBlue;
-        /// Camera capture state as off, video, or image.
-        enum State {OFF, VIDEO, IMAGE} state;
+        /// Frames Per Second (FPS) to capture video at.
+        float fps;
     };
     
     /// Default settings used when an instance of CameraThread is created.
     static constexpr Settings defaultSettings{
             640U, 480U, 
             true, 
-            127, 127, 127, 
-            0, 0, 0, 
-            Settings::OFF
+            127, 127, 127, 127,
+            0, 0, 0,
+            19.0
     };
+    
+private:
+    std::chrono::duration<int32_t, std::micro> fps_to_stdchrono;
 
     
 public:
     Settings getSettings();
-    void setSettings(Settings settings);
+    void setSettings(Settings const &settings);
+    /// Get whether the camera is currently taking a video.
+    bool getVideoOn(void);
+    /// Set whether the camera is currently taking a video.
+    void setVideoOn(bool isOn);
+    /// Take a picture with the camera. Works even during video capture.
+    void takePicture();
     std::vector<std::string> getCompletedFilenames();
-    
-private:
-    raspicam::RaspiCam_Cv camera;
-    
     
     // Camera settings which may be accessed from the outside.
 private:
     mutable std::mutex settingsMutex;
     std::condition_variable settingscv;
+    std::atomic<bool> settingsChanged;
     Settings settings;
+    bool videoOn;
+    unsigned int numPicturesToTake;
     std::vector<std::string> completedFileNames;
-    std::atomic_flag terminateNow;
+    std::atomic<bool> terminateNow;
     std::thread thread;
     
     // Helper functions
 private:
     static std::string getCurrentTime();
-    
+    void writePictureFrame(cv::Mat const &frame);
     
     
 };
