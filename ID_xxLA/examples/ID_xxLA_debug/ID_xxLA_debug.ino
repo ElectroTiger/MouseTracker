@@ -1,7 +1,4 @@
-#include <Arduino.h>
-#include "src/ID_xxLA.h"
-
-extern HardwareSerial Serial;
+#include <ID_xxLA.h>
 
 const int RXPin = 8;
 const int unusedTXPin = 10;
