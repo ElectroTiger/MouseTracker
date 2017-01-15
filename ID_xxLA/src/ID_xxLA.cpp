@@ -21,7 +21,7 @@ serial(RXPin, TXPin), tagInRangePin(tagInRangePin) {
 }
 
 bool ID_xxLA::getID(char *buffer, char *checksum) {
-    if (digitalRead(tagInRangePin)) { // Branch where tag is in range.
+    if ((digitalRead(tagInRangePin)) && (serial.available() == 16)) { // Branch where tag is in range.
         debugPrint("In tagInRangePin branch.");
         bool isValid = true;
 
@@ -88,6 +88,9 @@ bool ID_xxLA::getID(char *buffer, char *checksum) {
         debugPrint("Returning...");
         return isValid;
     } else { // Branch where tag is not in range.
+        while(serial.available() != 0) {
+            serial.read();
+        }
         return false;
     }
 }

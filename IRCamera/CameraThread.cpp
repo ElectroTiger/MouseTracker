@@ -92,7 +92,6 @@ void CameraThread::threadFunc() {
     cv::VideoWriter writer;
     cv::Mat frame;
     std::string filename;
-    auto lastTimePoint = std::chrono::steady_clock::now();
 
     enum ThreadState {
         OFF, VIDEO, CAMERA
@@ -117,6 +116,19 @@ void CameraThread::threadFunc() {
                 }
                 // Wait on a condition variable.
                 settingscv.wait(lock);
+                
+                // Change the settings if need be.
+                camera.set(CV_CAP_PROP_FRAME_WIDTH, settings.width);
+                camera.set(CV_CAP_PROP_FRAME_WIDTH, settings.height);
+                camera.set(CV_CAP_PROP_FORMAT, settings.isColor ? CV_8UC3 : CV_8UC1);
+                camera.set(CV_CAP_PROP_BRIGHTNESS, settings.brightness * 100 / 255.);
+                camera.set(CV_CAP_PROP_CONTRAST, settings.contrast * 100 / 255.);
+                camera.set(CV_CAP_PROP_SATURATION, settings.saturation * 100 / 255.);
+                camera.set(CV_CAP_PROP_GAIN, settings.gain * 100 / 255.);
+                camera.set(CV_CAP_PROP_EXPOSURE, settings.exposure * 100 / 255.);
+                camera.set(CV_CAP_PROP_WHITE_BALANCE_BLUE_U, settings.whiteBalanceBlue * 100 / 255.);
+                camera.set(CV_CAP_PROP_WHITE_BALANCE_RED_V, settings.whiteBalanceRed * 100 / 255.);
+                
                 if (numPicturesToTake > 0) {
                     state = CAMERA;
                 } else if (videoOn) {
@@ -153,7 +165,9 @@ void CameraThread::threadFunc() {
                         continue;
                     }
                 }
-
+                        
+                
+                auto lastTimePoint = std::chrono::steady_clock::now();
                 while (!terminateNow && videoOn) {
                     auto sleepUntil = lastTimePoint + fps_to_stdchrono;
                     auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(sleepUntil - std::chrono::steady_clock::now());
@@ -233,7 +247,7 @@ CameraThread::Settings CameraThread::getSettings() {
 void CameraThread::setSettings(Settings const &newSettings) {
     std::lock_guard<std::mutex> lock(settingsMutex);
     settings = newSettings;
-    fps_to_stdchrono = std::chrono::microseconds(static_cast<int32_t> (1000000 / settings.fps));
+    fps_to_stdchrono = std::chrono::microseconds(static_cast<int32_t> (1000000 / settings.fps));    
     settingscv.notify_one();
 }
 

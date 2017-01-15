@@ -14,14 +14,14 @@ GREP=grep
 NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc-6.2.0
-CCC=cpp-6.2.0
-CXX=cpp-6.2.0
+CC=gcc-6.3.0
+CCC=g++-6.3.0
+CXX=g++-6.3.0
 FC=gfortran
-AS=gcc-ar-6.2.0
+AS=gcc-ar-6.3.0
 
 # Macros
-CND_PLATFORM=GNU-6.2.0-Linux
+CND_PLATFORM=GCC-6.3.0-Linux
 CND_DLIB_EXT=so
 CND_CONF=Debug_RPi
 CND_DISTDIR=dist

@@ -13,6 +13,13 @@
 #include <SoftwareSerial.h>
 #include <Adafruit_MotorShield.h>
 #include <ID_xxLA.h>
+// Notes on which pins are used:
+// The Motor shield uses the I2C pins, which are pins A4 and A5 on the Arduino pro.
+// The data logging shield uses the SPI pins, which are D10, D11, D12, and D13. 
+// Hence, the ID_xxLA RFID reader will use pins D4, D5, and D6, which should be unoccupied. 
+int rfidRxPin = 5;
+int rfidTxPin = 6;
+int rfidTIRPin = 7;
 
 // Intitialzing global variables
 File dataFile;
@@ -27,7 +34,7 @@ const int CS_pin = 10;  // This initializes the SD card on pin 10
 RTC_DS1307 RTC;    // refer to the real-time clock on the SD shield
 String time;
 ///TODO: Fill this in with actual pins.
-ID_xxLA rfidReader(5, 8, 7);
+ID_xxLA rfidReader(rfidRxPin, rfidTxPin, rfidTIRPin);
 
 // Defining constants for calculating timing
 long previousMillis = 0;
@@ -45,12 +52,9 @@ Adafruit_MotorShield gMotorShield = Adafruit_MotorShield();
 // Set the second argument to 1 to use M1 and M2 on the motor shield, or set as 2 to use M3 and M4:
 Adafruit_StepperMotor *gPtrToStepper = gMotorShield.getStepper(MOTOR_STEPS_PER_REVOLUTION,1); 
 
-// This creates the function "logData" that is used in the code
-int logData(){
+// This function returns a string that is the current YMD, HMS.
+String getDateTimeString() {
   String year, month, day, hour, minute, second;
-  power_twi_enable();
-  power_spi_enable();
-
   DateTime datetime = RTC.now();
   year = String(datetime.year(), DEC);
   month = String(datetime.month(), DEC);
@@ -60,13 +64,19 @@ int logData(){
   second = String(datetime.second(), DEC);
 
   // concatenates the strings defined above into date and time
-  time = month + "/" + day + " " + hour + ":" + minute + ":" + second;
+  return time = month + "/" + day + " " + hour + ":" + minute + ":" + second;
+}
+
+// This creates the function "logData" that is used in the code
+int logData(){
+  power_twi_enable();
+  power_spi_enable();
 
   // opens a file on the SD card and prints a new line with the
   // current reinforcement schedule, the time stamp,
   // the number of sucrose deliveries, the number of active and
   // inactive pokes, and the number of drinking well entries.
-
+  String time = getDateTimeString();
   dataFile = SD.open(FILENAME, FILE_WRITE);
   if (dataFile) {
     Serial.println(F("File successfully written..."));
@@ -84,25 +94,14 @@ int logData(){
 
 // Weimen Li - This function is like "logData", but logs RFID reading data instead of pellet dat.
 int logRFIDData(char* RFIDtag){
-  String year, month, day, hour, minute, second;
   power_twi_enable();
   power_spi_enable();
-
-  DateTime datetime = RTC.now();
-  year = String(datetime.year(), DEC);
-  month = String(datetime.month(), DEC);
-  day  = String(datetime.day(),  DEC);
-  hour  = String(datetime.hour(),  DEC);
-  minute = String(datetime.minute(), DEC);
-  second = String(datetime.second(), DEC);
-
-  // concatenates the strings defined above into date and time
-  time = month + "/" + day + " " + hour + ":" + minute + ":" + second;
 
   // opens a file on the SD card and prints a new line with the
   // current reinforcement schedule, the time stamp,
   // the number of sucrose deliveries, the number of active and
   // inactive pokes, and the number of drinking well entries.
+  String time = getDateTimeString();
 
   dataFile = SD.open(FILENAME, FILE_WRITE);
   if (dataFile) {

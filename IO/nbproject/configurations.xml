@@ -44,7 +44,7 @@
   <confs>
     <conf name="Debug_RPi" type="3">
       <toolsSet>
-        <compilerSet>GNU-6.2.0|GNU</compilerSet>
+        <compilerSet>GCC-6.3.0|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>

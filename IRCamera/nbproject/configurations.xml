@@ -152,7 +152,7 @@
     </conf>
     <conf name="Debug-RPi" type="1">
       <toolsSet>
-        <compilerSet>GNU-6.2.0|GNU</compilerSet>
+        <compilerSet>GCC-6.3.0|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -162,8 +162,8 @@
         </cTool>
         <ccTool>
           <standard>11</standard>
-          <commandlineTool>g++-6.2.0</commandlineTool>
-          <commandLine>-Wall -pedantic -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard -funsafe-math-optimizations</commandLine>
+          <commandlineTool>g++-6.3.0</commandlineTool>
+          <commandLine>-Wall -pedantic -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>

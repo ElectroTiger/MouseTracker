@@ -30,6 +30,7 @@ private:
     // Functor operator allows class to be used where void function() would be used.
     // This method is called when CameraThread is passed as an argument to something accepting a function pointer.
     void threadFunc();
+    void cameraWriterThread();
     
 public: 
     // Structure which encapsulates camera settings.

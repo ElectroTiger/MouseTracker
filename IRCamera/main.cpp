@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 //    std::this_thread::yield();
     //cameraThreadObj.takePicture();
     cameraThreadObj.setVideoOn(true);
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    std::this_thread::sleep_for(std::chrono::seconds(20));
     cameraThreadObj.setVideoOn(false);
     auto filenames = cameraThreadObj.getCompletedFilenames();
     for (auto&& filename : filenames) {
