@@ -119,7 +119,7 @@ void CameraThread::threadFunc() {
                 
                 // Change the settings if need be.
                 camera.set(CV_CAP_PROP_FRAME_WIDTH, settings.width);
-                camera.set(CV_CAP_PROP_FRAME_WIDTH, settings.height);
+                camera.set(CV_CAP_PROP_FRAME_HEIGHT, settings.height);
                 camera.set(CV_CAP_PROP_FORMAT, settings.isColor ? CV_8UC3 : CV_8UC1);
                 camera.set(CV_CAP_PROP_BRIGHTNESS, settings.brightness * 100 / 255.);
                 camera.set(CV_CAP_PROP_CONTRAST, settings.contrast * 100 / 255.);

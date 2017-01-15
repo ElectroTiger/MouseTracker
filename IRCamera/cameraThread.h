@@ -61,7 +61,7 @@ public:
     
     /// Default settings used when an instance of CameraThread is created.
     static constexpr Settings defaultSettings{
-            640U, 480U, 
+            1920U, 1080U, 
             true, 
             127, 127, 127, 127,
             0, 0, 0,
