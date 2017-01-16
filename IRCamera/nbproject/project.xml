@@ -9,9 +9,13 @@
             <header-extensions>h</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects>
+                <make-dep-project>../raspberrypi_omxcam</make-dep-project>
                 <make-dep-project>../IO</make-dep-project>
             </make-dep-projects>
-            <sourceRootList/>
+            <sourceRootList>
+                <sourceRootElem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\include</sourceRootElem>
+                <sourceRootElem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\src</sourceRootElem>
+            </sourceRootList>
             <confList>
                 <confElem>
                     <name>Debug</name>

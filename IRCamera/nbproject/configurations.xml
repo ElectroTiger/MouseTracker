@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -36,6 +36,10 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\include</Elem>
+    <Elem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\src</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -159,25 +163,34 @@
       <compileType>
         <cTool>
           <standard>10</standard>
+          <incDir>
+            <pElem>/opt/vc/include/</pElem>
+            <pElem>../raspberrypi_omxcam/include</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>OMX_SKIP64BIT</Elem>
+          </preprocessorList>
         </cTool>
         <ccTool>
           <standard>11</standard>
           <commandlineTool>g++-6.3.0</commandlineTool>
+          <incDir>
+            <pElem>/opt/vc/include/</pElem>
+            <pElem>../raspberrypi_omxcam/include</pElem>
+          </incDir>
           <commandLine>-Wall -pedantic -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard</commandLine>
+          <preprocessorList>
+            <Elem>OMX_SKIP64BIT</Elem>
+          </preprocessorList>
           <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera</output>
           <linkerAddLib>
-            <pElem>/usr/local/gcc-6.2.0/lib</pElem>
+            <pElem>/usr/local/gcc-6.3.0/lib</pElem>
           </linkerAddLib>
           <linkerLibItems>
-            <linkerLibLibItem>raspicam</linkerLibLibItem>
-            <linkerLibLibItem>raspicam_cv</linkerLibLibItem>
             <linkerLibLibItem>pthread</linkerLibLibItem>
-            <linkerLibLibItem>opencv_core</linkerLibLibItem>
-            <linkerLibLibItem>opencv_imgcodecs</linkerLibLibItem>
-            <linkerLibLibItem>opencv_videoio</linkerLibLibItem>
-            <linkerLibLibItem>opencv_imgproc</linkerLibLibItem>
             <linkerLibProjectItem>
               <makeArtifact PL="../IO"
                             CT="3"
@@ -188,6 +201,19 @@
                             BC="${MAKE}  -f Makefile CONF=Debug_RPi"
                             CC="${MAKE}  -f Makefile CONF=Debug_RPi clean"
                             OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libio.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+            <linkerLibLibItem>rt</linkerLibLibItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../raspberrypi_omxcam"
+                            CT="0"
+                            CN="Default"
+                            AC="true"
+                            BL="true"
+                            WD="../raspberrypi_omxcam"
+                            BC="${MAKE} -f Makefile"
+                            CC="${MAKE} -f Makefile clean"
+                            OP="lib/libomxcam.so">
               </makeArtifact>
             </linkerLibProjectItem>
           </linkerLibItems>

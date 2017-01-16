@@ -16,10 +16,9 @@
 #include <sstream>
 #include <cstdlib>
 #include <exception>
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/videoio.hpp>
-#include <opencv2/imgproc.hpp>
+
+// Set the instance pointer to nullptr to define it.
+CameraThread* CameraThread::m_pInstance = nullptr;
 
 std::string CameraThread::getCurrentTime(void) {
     auto currentTime = std::chrono::system_clock::now();
@@ -39,19 +38,30 @@ std::string CameraThread::getCurrentTime(void) {
 
 }
 
-CameraThread::CameraThread() :
-settings(defaultSettings), videoOn(false), numPicturesToTake(0), terminateNow(false) {
+CameraThread* CameraThread::Instance() {
+    if (!m_pInstance) {
+        m_pInstance = new CameraThread();
+    }
+    return m_pInstance;
+}
+
+void CameraThread::start() {
     setSettings(settings);
     thread = std::thread(&CameraThread::threadFunc, std::ref(*this));
 }
 
-CameraThread::~CameraThread() {
+void CameraThread::stop() {
     //std::lock_guard<std::mutex> lock(settingsMutex);
     terminateNow = true;
     //settingscv.notify_one();
     if (thread.joinable()) {
         thread.join();
     }
+}
+
+CameraThread::CameraThread() :
+settings(defaultSettings), videoOn(false), numPicturesToTake(0), terminateNow(false) {
+
 }
 
 bool CameraThread::getVideoOn() {
@@ -62,35 +72,40 @@ bool CameraThread::getVideoOn() {
 void CameraThread::setVideoOn(bool isOn) {
     std::lock_guard<std::mutex> lock(settingsMutex);
     videoOn = isOn;
+    settingsChanged = true;
     settingscv.notify_one();
 }
 
 void CameraThread::takePicture() {
     std::lock_guard<std::mutex> lock(settingsMutex);
     numPicturesToTake += 1;
+    settingsChanged = true;
     settingscv.notify_one();
 }
 
-void CameraThread::writePictureFrame(cv::Mat const &frame) {
-    // Write the image.
-    std::string filename = getCurrentTime() + ".png";
-    try {
-        imwrite(filename, frame); // This may throw an exception.
-    } catch (std::exception e) {
-        std::cerr << e.what() << std::endl;
-        throw;
+// Callback function used when a frame is received.
+
+void CameraThread::onData(omxcam_buffer_t buffer) {
+    auto obj = CameraThread::Instance();
+    // Write the data to the file output.
+    obj->file.write(reinterpret_cast<char*> (buffer.data), buffer.length);
+    // Terminate of failure condition is detected.
+    if (obj->file.fail()) {
+        obj->terminateNow = true;
     }
-    completedFileNames.push_back(filename);
+    if (obj->terminateNow || !(obj->videoOn)) {
+        if (omxcam_video_stop()) {
+            omxcam_perror();
+            throw std::runtime_error(omxcam_strerror(omxcam_last_error()));
+        }
+    }
 }
 
 void CameraThread::threadFunc() {
-        raspicam::RaspiCam_Cv camera;
     /* Check if the camera is attached. */
 
     /* Initialize the camera*/
-
-    cv::VideoWriter writer;
-    cv::Mat frame;
+    omxcam_video_settings_t settings;
     std::string filename;
 
     enum ThreadState {
@@ -103,32 +118,18 @@ void CameraThread::threadFunc() {
             case OFF:
             {
                 std::unique_lock<std::mutex> lock(settingsMutex); // Unique lock is necessary because std::condition_variable requires it as input.
-                // Release the camera and writer in case we arrived here due to an exception.
-                if (camera.isOpened()) {
-                    camera.release();
-                }
-                if (writer.isOpened()) {
-                    writer.release();
-                }
                 if (terminateNow) {
                     terminate = true;
                     continue;
                 }
                 // Wait on a condition variable.
-                settingscv.wait(lock);
-                
+                while (!settingsChanged) {
+                    settingscv.wait(lock);
+                }
+                settingsChanged = false;
+
                 // Change the settings if need be.
-                camera.set(CV_CAP_PROP_FRAME_WIDTH, settings.width);
-                camera.set(CV_CAP_PROP_FRAME_HEIGHT, settings.height);
-                camera.set(CV_CAP_PROP_FORMAT, settings.isColor ? CV_8UC3 : CV_8UC1);
-                camera.set(CV_CAP_PROP_BRIGHTNESS, settings.brightness * 100 / 255.);
-                camera.set(CV_CAP_PROP_CONTRAST, settings.contrast * 100 / 255.);
-                camera.set(CV_CAP_PROP_SATURATION, settings.saturation * 100 / 255.);
-                camera.set(CV_CAP_PROP_GAIN, settings.gain * 100 / 255.);
-                camera.set(CV_CAP_PROP_EXPOSURE, settings.exposure * 100 / 255.);
-                camera.set(CV_CAP_PROP_WHITE_BALANCE_BLUE_U, settings.whiteBalanceBlue * 100 / 255.);
-                camera.set(CV_CAP_PROP_WHITE_BALANCE_RED_V, settings.whiteBalanceRed * 100 / 255.);
-                
+
                 if (numPicturesToTake > 0) {
                     state = CAMERA;
                 } else if (videoOn) {
@@ -142,98 +143,59 @@ void CameraThread::threadFunc() {
 
             case VIDEO:
             {
-
                 // Open the camera and throw an exception on failure.
-                if (!camera.open()) {
-                    throw std::runtime_error("Camera could not be opened.");
+                std::clog << "CameraThread.cpp: in VIDEO";
+                omxcam_video_init(&settings);
+                filename = getCurrentTime() + ".h264"; // Filename of video output.
+                // std::function<void(omxcam_buffer_t)> cb = std::bind(&CameraThread::onData, this, std::placeholders::_1);
+                settings.on_data = Instance()->onData;
+                settings.camera.width = 1920;
+                settings.camera.height = 1080;
+                settings.camera.framerate = 30;
+
+                file.open(filename);
+                if (file.fail()) {
+                    throw std::runtime_error("File could not be opened.");
                     state = OFF;
                     continue;
                 }
-
-                // Prepare settings for the video writer.
-                filename = getCurrentTime() + ".avi"; // Filename of video output.
-                const int codec = CV_FOURCC('H', '2', '6', '4'); // Codec
-                const cv::Size size((int) camera.get(CV_CAP_PROP_FRAME_WIDTH),
-                        (int) camera.get(CV_CAP_PROP_FRAME_HEIGHT));
-
-                {
-                    std::lock_guard<std::mutex> lock(settingsMutex);
-                            // Open the video writer and throw an exception on failure.
-                    if (!writer.open(filename, codec, settings.fps, size, settings.isColor)) {
-                        throw std::runtime_error("Video file could not be opened.");
-                        state = OFF;
-                        continue;
-                    }
-                }
-                        
-                
-                auto lastTimePoint = std::chrono::steady_clock::now();
-                while (!terminateNow && videoOn) {
-                    auto sleepUntil = lastTimePoint + fps_to_stdchrono;
-                    auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(sleepUntil - std::chrono::steady_clock::now());
-                    if (elapsedTime.count() < 0) {
-                        std::cerr << "Warning: fps requirement cannot be met. Exceeded by " << -elapsedTime.count() << " us. Likely set too high." << std::endl;
-                    } else {
-                        std::this_thread::sleep_until(sleepUntil);
-                    }
-                    if (!camera.grab()) {
-                        throw std::runtime_error("Frame grab failed. Writing captured video.");
-                        std::lock_guard<std::mutex> lock(settingsMutex);
-                        videoOn = false;
-                        continue;
-                    }
-                    lastTimePoint = std::chrono::steady_clock::now();
-
-                    camera.retrieve(frame);
-
-                    // Convert the frame to RGB color since it seems to be taken in BGR color.
-                    //cv::Mat frameTemp = frame; 
-                    //cv::cvtColor(frameTemp, frame, CV_BGR2RGB);
-
-                    writer.write(frame);
-                    if (numPicturesToTake != 0) {
-                        writePictureFrame(frame);
-                        numPicturesToTake--;
-                    }
-                }
-
-                camera.release();
-                writer.release();
+                // Start the camera, which blocks this thread.
+                omxcam_video_start(&settings, 1000 * 60 * 60);
+                // Capture is terminated in the following lines.
+                file.close();
                 completedFileNames.push_back(filename);
                 state = OFF;
-                break;
-
                 break;
             }
 
             case CAMERA:
             {
-                // Open the camera
-                if (!camera.open()) {
-                    throw std::runtime_error("Camera could not be opened.");
-                    state = OFF;
-                    continue;
-                }
-
-                // Grab the frame.
-                if (!camera.grab()) {
-                    throw std::runtime_error("Frame grab failed. Writing captured video.");
-                    state = OFF;
-                    continue;
-                }
-                camera.retrieve(frame);
-                // Convert the frame to RGB color since it seems to be taken in BGR color.
-                cv::Mat frameTemp = frame;
-                cv::cvtColor(frameTemp, frame, CV_BGR2RGB);
-
-                writePictureFrame(frame);
-                completedFileNames.push_back(filename);
-
-                // Release the camera.
-                camera.release();
-                numPicturesToTake--;
-                state = OFF;
-                break;
+                //                // Open the camera
+                //                if (!camera.open()) {
+                //                    throw std::runtime_error("Camera could not be opened.");
+                //                    state = OFF;
+                //                    continue;
+                //                }
+                //
+                //                // Grab the frame.
+                //                if (!camera.grab()) {
+                //                    throw std::runtime_error("Frame grab failed. Writing captured video.");
+                //                    state = OFF;
+                //                    continue;
+                //                }
+                //                camera.retrieve(frame);
+                //                // Convert the frame to RGB color since it seems to be taken in BGR color.
+                //                cv::Mat frameTemp = frame;
+                //                cv::cvtColor(frameTemp, frame, CV_BGR2RGB);
+                //
+                //                writePictureFrame(frame);
+                //                completedFileNames.push_back(filename);
+                //
+                //                // Release the camera.
+                //                camera.release();
+                //                numPicturesToTake--;
+                //                state = OFF;
+                //                break;
             }
         }
     }
@@ -247,7 +209,8 @@ CameraThread::Settings CameraThread::getSettings() {
 void CameraThread::setSettings(Settings const &newSettings) {
     std::lock_guard<std::mutex> lock(settingsMutex);
     settings = newSettings;
-    fps_to_stdchrono = std::chrono::microseconds(static_cast<int32_t> (1000000 / settings.fps));    
+    fps_to_stdchrono = std::chrono::microseconds(static_cast<int32_t> (1000000 / settings.fps));
+    settingsChanged = true;
     settingscv.notify_one();
 }
 

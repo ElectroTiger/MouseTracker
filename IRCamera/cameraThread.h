@@ -17,20 +17,26 @@
 #include <mutex>
 #include <fstream>
 #include <vector>
-#include <raspicam/raspicam_cv.h>
 #include <condition_variable>
 #include <atomic>
+#include "../raspberrypi_omxcam/include/omxcam.h"
 
 class CameraThread {
 public:
+    static CameraThread* Instance();
+    // Start the camerathread.
+    void start();
+    // Stop the cameraThread.
+    void stop();
+private:
     CameraThread();
     CameraThread(const CameraThread&) = delete; // No copies allowed.
-    virtual ~CameraThread();
-private:
     // Functor operator allows class to be used where void function() would be used.
     // This method is called when CameraThread is passed as an argument to something accepting a function pointer.
     void threadFunc();
     void cameraWriterThread();
+    
+    static CameraThread* m_pInstance;
     
 public: 
     // Structure which encapsulates camera settings.
@@ -87,7 +93,7 @@ public:
 private:
     mutable std::mutex settingsMutex;
     std::condition_variable settingscv;
-    std::atomic<bool> settingsChanged;
+    bool settingsChanged;
     Settings settings;
     bool videoOn;
     unsigned int numPicturesToTake;
@@ -98,12 +104,8 @@ private:
     // Helper functions
 private:
     static std::string getCurrentTime();
-    void writePictureFrame(cv::Mat const &frame);
-    
-    
+    static void onData(omxcam_buffer_t buffer);
+    std::ofstream file;
 };
-
-
-
 #endif /* CAMERATHREAD_H */
 

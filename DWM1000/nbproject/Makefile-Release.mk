@@ -72,7 +72,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dwm1000.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dwm1000 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/DWM1000.o: DWM1000.cpp 
+${OBJECTDIR}/DWM1000.o: DWM1000.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DWM1000.o DWM1000.cpp
@@ -86,7 +86,7 @@ ${OBJECTDIR}/DWM1000.o: DWM1000.cpp
 
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/Basic\ Test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} 
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   
 
 
 .NO_PARALLEL:${TESTDIR}/tests/Basic\ Test.o
@@ -121,7 +121,6 @@ ${OBJECTDIR}/DWM1000_nomain.o: ${OBJECTDIR}/DWM1000.o DWM1000.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dwm1000.exe
 
 # Subprojects
 .clean-subprojects:

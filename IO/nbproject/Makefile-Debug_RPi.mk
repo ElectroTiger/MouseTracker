@@ -84,11 +84,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libio.a: ${OBJECTFILES}
 
 ${TESTDIR}/TestFiles/f2: ${TESTDIR}/wiringPiHeaders/tests/RpiGPIOTest.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} 
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS}   
 
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/wiringPiHeaders/tests/RpiSPITest.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} 
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   
 
 
 ${TESTDIR}/wiringPiHeaders/tests/RpiGPIOTest.o: wiringPiHeaders/tests/RpiGPIOTest.cpp 
@@ -116,7 +116,6 @@ ${TESTDIR}/wiringPiHeaders/tests/RpiSPITest.o: wiringPiHeaders/tests/RpiSPITest.
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libio.a
 
 # Subprojects
 .clean-subprojects:

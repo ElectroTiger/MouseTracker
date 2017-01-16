@@ -1,7 +1,7 @@
 # Path to the target shared library
-TARGET_LIB = lib/libomxcam.so
+TARGET_LIB = ./lib/libomxcam.so
 
-CC = gcc
+CC = gcc-6.3.0
 # Add -DOMXCAM_DEBUG for debugging purposes
 CFLAGS = -DSTANDALONE -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS \
 		-DTARGET_POSIX -D_LINUX -DPIC -D_REENTRANT -D_LARGEFILE64_SOURCE \
@@ -9,7 +9,8 @@ CFLAGS = -DSTANDALONE -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS \
 		-DOMX_SKIP64BIT -DUSE_EXTERNAL_OMX -DHAVE_LIBBCM_HOST \
 		-DUSE_EXTERNAL_LIBBCM_HOST -DUSE_VCHIQ_ARM -fPIC -ftree-vectorize -pipe \
 		-Werror -g -Wall -O2 -fvisibility=hidden -DOMXCAM_DEBUG
-LDFLAGS = -shared
+LDFLAGS = -shared -L/opt/vc/lib -lopenmaxil -lbcm_host -lvchiq_arm -lpthread \
+		-Wl,-rpath=$(OMXCAM_HOME)/lib
 INCLUDES = -I/opt/vc/include -I/opt/vc/include/interface/vcos/pthreads \
 		-I/opt/vc/include/interface/vmcs_host/linux -I./src -I./include
 
