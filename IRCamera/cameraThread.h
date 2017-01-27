@@ -104,7 +104,8 @@ private:
     // Helper functions
 private:
     static std::string getCurrentTime();
-    static void onData(omxcam_buffer_t buffer);
+    static void onDataVideo(omxcam_buffer_t buffer);
+    static void onDataImage(omxcam_buffer_t buffer);
     std::ofstream file;
 };
 #endif /* CAMERATHREAD_H */

@@ -38,6 +38,14 @@ CND_ARTIFACT_PATH_Release-Rpi=dist/Release-Rpi/GNU-6.2.0-Linux/ircamera
 CND_PACKAGE_DIR_Release-Rpi=dist/Release-Rpi/GNU-6.2.0-Linux/package
 CND_PACKAGE_NAME_Release-Rpi=ircamera.tar
 CND_PACKAGE_PATH_Release-Rpi=dist/Release-Rpi/GNU-6.2.0-Linux/package/ircamera.tar
+# Debug-Rpi-Zero configuration
+CND_PLATFORM_Debug-Rpi-Zero=GNU-Linux
+CND_ARTIFACT_DIR_Debug-Rpi-Zero=dist/Debug-Rpi-Zero/GNU-Linux
+CND_ARTIFACT_NAME_Debug-Rpi-Zero=ircamera
+CND_ARTIFACT_PATH_Debug-Rpi-Zero=dist/Debug-Rpi-Zero/GNU-Linux/ircamera
+CND_PACKAGE_DIR_Debug-Rpi-Zero=dist/Debug-Rpi-Zero/GNU-Linux/package
+CND_PACKAGE_NAME_Debug-Rpi-Zero=ircamera.tar
+CND_PACKAGE_PATH_Debug-Rpi-Zero=dist/Debug-Rpi-Zero/GNU-Linux/package/ircamera.tar
 #
 # include compiler specific variables
 #

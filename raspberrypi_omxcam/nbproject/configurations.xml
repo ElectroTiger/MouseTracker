@@ -335,5 +335,259 @@
         </cTool>
       </item>
     </conf>
+    <conf name="Rpi-Zero" type="0">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-fPIC -g -O2"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile-shared</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile-shared clean</cleanCommand>
+          <executablePath>lib/libomxcam.so</executablePath>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="benchmark/bench.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="benchmark/h264.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="benchmark/jpeg.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="benchmark/rgb.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="benchmark/yuv.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="examples/still/jpeg/OpenCVexample.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="examples/still/jpeg/jpeg.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="examples/still/rgb/rgb.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="examples/still/yuv/yuv.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="examples/video/h264-motion-nopthread/h264-motion-nopthread.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="examples/video/h264-motion/h264-motion.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="examples/video/h264-nopthread/h264-nopthread.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="examples/video/h264-stdout/h264-stdout.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="examples/video/h264-update-timer/h264-update-timer.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="examples/video/h264-update/h264-update.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="examples/video/h264/h264.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="examples/video/rgb/rgb.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="examples/video/yuv/yuv.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <folder path="0/benchmark">
+        <cTool>
+          <incDir>
+            <pElem>benchmark</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/still/jpeg">
+        <cTool>
+          <incDir>
+            <pElem>examples/still/jpeg</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/still/rgb">
+        <cTool>
+          <incDir>
+            <pElem>examples/still/rgb</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/still/yuv">
+        <cTool>
+          <incDir>
+            <pElem>examples/still/yuv</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/h264">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/h264</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/h264-motion">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/h264-motion</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/h264-motion-nopthread">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/h264-motion-nopthread</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/h264-nopthread">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/h264-nopthread</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/h264-stdout">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/h264-stdout</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/h264-update">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/h264-update</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/h264-update-timer">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/h264-update-timer</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/rgb">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/rgb</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/examples/video/yuv">
+        <cTool>
+          <incDir>
+            <pElem>examples/video/yuv</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="0/src">
+        <cTool>
+          <incDir>
+            <pElem>../../../../AppData/Local/NetBeans/Cache/8.2/remote-files/weimenl0rpi0modelb.local_22_pi/opt/vc/include</pElem>
+            <pElem>../../../../AppData/Local/NetBeans/Cache/8.2/remote-files/weimenl0rpi0modelb.local_22_pi/opt/vc/include/interface/vcos/pthreads</pElem>
+            <pElem>../../../../AppData/Local/NetBeans/Cache/8.2/remote-files/weimenl0rpi0modelb.local_22_pi/opt/vc/include/interface/vmcs_host/linux</pElem>
+            <pElem>src</pElem>
+            <pElem>include</pElem>
+            <pElem></pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>HAVE_LIBBCM_HOST</Elem>
+            <Elem>HAVE_LIBOPENMAX=2</Elem>
+            <Elem>OMX</Elem>
+            <Elem>OMXCAM_DEBUG</Elem>
+            <Elem>OMX_SKIP64BIT</Elem>
+            <Elem>PIC</Elem>
+            <Elem>STANDALONE</Elem>
+            <Elem>TARGET_POSIX</Elem>
+            <Elem>USE_EXTERNAL_LIBBCM_HOST</Elem>
+            <Elem>USE_EXTERNAL_OMX</Elem>
+            <Elem>USE_VCHIQ_ARM</Elem>
+            <Elem>_FILE_OFFSET_BITS=64</Elem>
+            <Elem>_LARGEFILE64_SOURCE</Elem>
+            <Elem>_LINUX</Elem>
+            <Elem>_REENTRANT</Elem>
+            <Elem>__STDC_CONSTANT_MACROS</Elem>
+            <Elem>__STDC_LIMIT_MACROS</Elem>
+          </preprocessorList>
+          <undefinedList>
+            <Elem>_FORTIFY_SOURCE</Elem>
+          </undefinedList>
+        </cTool>
+      </folder>
+      <item path="src/camera.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/core.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/debug.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/dump_omx.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/error.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/event.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/h264.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/jpeg.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/still.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/utils.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/version.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="src/video.c" ex="false" tool="0" flavor2="9">
+        <cTool flags="0">
+        </cTool>
+      </item>
+    </conf>
   </confs>
 </configurationDescriptor>

@@ -85,12 +85,13 @@ void CameraThread::takePicture() {
 
 // Callback function used when a frame is received.
 
-void CameraThread::onData(omxcam_buffer_t buffer) {
+void CameraThread::onDataVideo(omxcam_buffer_t buffer) {
     auto obj = CameraThread::Instance();
     // Write the data to the file output.
     obj->file.write(reinterpret_cast<char*> (buffer.data), buffer.length);
     // Terminate of failure condition is detected.
     if (obj->file.fail()) {
+        std::cerr << "Video frame write failure.";
         obj->terminateNow = true;
     }
     if (obj->terminateNow || !(obj->videoOn)) {
@@ -101,11 +102,25 @@ void CameraThread::onData(omxcam_buffer_t buffer) {
     }
 }
 
+// Callback function used when an image is received.
+void CameraThread::onDataImage(omxcam_buffer_t buffer) {
+    // Retrieve the instance of the camerathread singleton.
+    auto obj = CameraThread::Instance();
+    obj->file.write(reinterpret_cast<char*> (buffer.data), buffer.length);
+    // Log if failure condition is detected.
+    if (obj->file.fail()) {
+        std::cerr << "Camera frame write failure.";
+    }
+    
+}
+
+
 void CameraThread::threadFunc() {
     /* Check if the camera is attached. */
 
     /* Initialize the camera*/
-    omxcam_video_settings_t settings;
+    omxcam_video_settings_t videoSettings;
+    omxcam_still_settings_t stillSettings;
     std::string filename;
 
     enum ThreadState {
@@ -144,14 +159,14 @@ void CameraThread::threadFunc() {
             case VIDEO:
             {
                 // Open the camera and throw an exception on failure.
-                std::clog << "CameraThread.cpp: in VIDEO";
-                omxcam_video_init(&settings);
+                std::clog << "CameraThread.cpp: in VIDEO" << std::endl;
+                omxcam_video_init(&videoSettings);
                 filename = getCurrentTime() + ".h264"; // Filename of video output.
                 // std::function<void(omxcam_buffer_t)> cb = std::bind(&CameraThread::onData, this, std::placeholders::_1);
-                settings.on_data = Instance()->onData;
-                settings.camera.width = 1920;
-                settings.camera.height = 1080;
-                settings.camera.framerate = 30;
+                videoSettings.on_data = Instance()->onDataVideo;
+                videoSettings.camera.width = 1920;
+                videoSettings.camera.height = 1080;
+                videoSettings.camera.framerate = 30;
 
                 file.open(filename);
                 if (file.fail()) {
@@ -160,7 +175,7 @@ void CameraThread::threadFunc() {
                     continue;
                 }
                 // Start the camera, which blocks this thread.
-                omxcam_video_start(&settings, 1000 * 60 * 60);
+                omxcam_video_start(&videoSettings, 1000 * 60 * 60);
                 // Capture is terminated in the following lines.
                 file.close();
                 completedFileNames.push_back(filename);
@@ -170,32 +185,25 @@ void CameraThread::threadFunc() {
 
             case CAMERA:
             {
-                //                // Open the camera
-                //                if (!camera.open()) {
-                //                    throw std::runtime_error("Camera could not be opened.");
-                //                    state = OFF;
-                //                    continue;
-                //                }
-                //
-                //                // Grab the frame.
-                //                if (!camera.grab()) {
-                //                    throw std::runtime_error("Frame grab failed. Writing captured video.");
-                //                    state = OFF;
-                //                    continue;
-                //                }
-                //                camera.retrieve(frame);
-                //                // Convert the frame to RGB color since it seems to be taken in BGR color.
-                //                cv::Mat frameTemp = frame;
-                //                cv::cvtColor(frameTemp, frame, CV_BGR2RGB);
-                //
-                //                writePictureFrame(frame);
-                //                completedFileNames.push_back(filename);
-                //
-                //                // Release the camera.
-                //                camera.release();
-                //                numPicturesToTake--;
-                //                state = OFF;
-                //                break;
+                std::clog << "CameraThread.cpp: in CAMERA" << std::endl;
+                omxcam_still_init(&stillSettings);
+                filename = getCurrentTime() + ".jpeg"; // Filename of image output.
+                stillSettings.on_data = Instance()->onDataImage;
+                stillSettings.camera.width = 1920;
+                stillSettings.camera.height = 1080;
+                
+                // Open a file to write.
+                file.open(filename);
+                if (file.fail()) {
+                    throw std::runtime_error("File could not be opened.");
+                    state = OFF;
+                    continue;
+                }
+                omxcam_still_start(&stillSettings);
+                file.close();
+                completedFileNames.push_back(filename);
+                state = OFF;
+                break;
             }
         }
     }
