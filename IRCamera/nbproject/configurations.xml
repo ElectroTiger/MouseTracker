@@ -352,23 +352,8 @@
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera</output>
-          <linkerAddLib>
-            <pElem>/usr/local/gcc-6.3.0/lib</pElem>
-          </linkerAddLib>
           <linkerLibItems>
             <linkerLibLibItem>pthread</linkerLibLibItem>
-            <linkerLibProjectItem>
-              <makeArtifact PL="../IO"
-                            CT="3"
-                            CN="Debug_RPi"
-                            AC="true"
-                            BL="true"
-                            WD="../IO"
-                            BC="${MAKE}  -f Makefile CONF=Debug_RPi"
-                            CC="${MAKE}  -f Makefile CONF=Debug_RPi clean"
-                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libio.a">
-              </makeArtifact>
-            </linkerLibProjectItem>
             <linkerLibLibItem>rt</linkerLibLibItem>
             <linkerLibProjectItem>
               <makeArtifact PL="../raspberrypi_omxcam"
