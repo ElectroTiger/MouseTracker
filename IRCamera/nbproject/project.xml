@@ -4,7 +4,7 @@
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
             <name>IRCamera</name>
-            <c-extensions/>
+            <c-extensions>c</c-extensions>
             <cpp-extensions>cpp</cpp-extensions>
             <header-extensions>h</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
@@ -15,6 +15,7 @@
             <sourceRootList>
                 <sourceRootElem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\include</sourceRootElem>
                 <sourceRootElem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\src</sourceRootElem>
+                <sourceRootElem>decadriver</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

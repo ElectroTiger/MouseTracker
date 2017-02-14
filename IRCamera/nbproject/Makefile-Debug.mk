@@ -35,8 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/f30a23f9/Utilities.o \
 	${OBJECTDIR}/CameraThread.o \
 	${OBJECTDIR}/DWM1000Thread.o \
+	${OBJECTDIR}/decadriver/deca_device.o \
+	${OBJECTDIR}/decadriver/deca_params_init.o \
 	${OBJECTDIR}/main.o
 
 # Test Directory
@@ -74,6 +77,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/_ext/f30a23f9/Utilities.o: ../raspberrypi_omxcam/include/Utilities.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/f30a23f9
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f30a23f9/Utilities.o ../raspberrypi_omxcam/include/Utilities.cpp
+
 ${OBJECTDIR}/CameraThread.o: CameraThread.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -83,6 +91,16 @@ ${OBJECTDIR}/DWM1000Thread.o: DWM1000Thread.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DWM1000Thread.o DWM1000Thread.cpp
+
+${OBJECTDIR}/decadriver/deca_device.o: decadriver/deca_device.c
+	${MKDIR} -p ${OBJECTDIR}/decadriver
+	${RM} "$@.d"
+	$(COMPILE.c) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/decadriver/deca_device.o decadriver/deca_device.c
+
+${OBJECTDIR}/decadriver/deca_params_init.o: decadriver/deca_params_init.c
+	${MKDIR} -p ${OBJECTDIR}/decadriver
+	${RM} "$@.d"
+	$(COMPILE.c) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/decadriver/deca_params_init.o decadriver/deca_params_init.c
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -106,6 +124,19 @@ ${TESTDIR}/tests/CameraThreadTest.o: tests/CameraThreadTest.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -I. -std=c++11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/CameraThreadTest.o tests/CameraThreadTest.cpp
 
+
+${OBJECTDIR}/_ext/f30a23f9/Utilities_nomain.o: ${OBJECTDIR}/_ext/f30a23f9/Utilities.o ../raspberrypi_omxcam/include/Utilities.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/f30a23f9
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/f30a23f9/Utilities.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -std=c++11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f30a23f9/Utilities_nomain.o ../raspberrypi_omxcam/include/Utilities.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/f30a23f9/Utilities.o ${OBJECTDIR}/_ext/f30a23f9/Utilities_nomain.o;\
+	fi
 
 ${OBJECTDIR}/CameraThread_nomain.o: ${OBJECTDIR}/CameraThread.o CameraThread.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -131,6 +162,32 @@ ${OBJECTDIR}/DWM1000Thread_nomain.o: ${OBJECTDIR}/DWM1000Thread.o DWM1000Thread.
 	    $(COMPILE.cc) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -std=c++11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DWM1000Thread_nomain.o DWM1000Thread.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/DWM1000Thread.o ${OBJECTDIR}/DWM1000Thread_nomain.o;\
+	fi
+
+${OBJECTDIR}/decadriver/deca_device_nomain.o: ${OBJECTDIR}/decadriver/deca_device.o decadriver/deca_device.c 
+	${MKDIR} -p ${OBJECTDIR}/decadriver
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/decadriver/deca_device.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/decadriver/deca_device_nomain.o decadriver/deca_device.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/decadriver/deca_device.o ${OBJECTDIR}/decadriver/deca_device_nomain.o;\
+	fi
+
+${OBJECTDIR}/decadriver/deca_params_init_nomain.o: ${OBJECTDIR}/decadriver/deca_params_init.o decadriver/deca_params_init.c 
+	${MKDIR} -p ${OBJECTDIR}/decadriver
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/decadriver/deca_params_init.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include -I/C/SysGCC/Raspberry/lib/gcc/arm-linux-gnueabihf/4.9/include-fixed -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf -I/C/SysGCC/Raspberry/arm-linux-gnueabihf/sysroot/usr/local/include -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/decadriver/deca_params_init_nomain.o decadriver/deca_params_init.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/decadriver/deca_params_init.o ${OBJECTDIR}/decadriver/deca_params_init_nomain.o;\
 	fi
 
 ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp 

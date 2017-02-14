@@ -16,27 +16,10 @@
 #include <sstream>
 #include <cstdlib>
 #include <exception>
+#include "Utilities.h"
 
 // Set the instance pointer to nullptr to define it.
 CameraThread* CameraThread::m_pInstance = nullptr;
-
-std::string CameraThread::getCurrentTime(void) {
-    auto currentTime = std::chrono::system_clock::now();
-    auto currentTime_time_t = std::chrono::system_clock::to_time_t(currentTime);
-    auto currentTime_c = std::localtime(&currentTime_time_t);
-    // Use ISO 8601 format.
-    std::ostringstream fileName;
-    fileName
-            << std::setw(4) << currentTime_c->tm_year + 1900 << '-'
-            << std::setw(2) << std::setfill('0') << currentTime_c->tm_mon + 1 << '-'
-            << std::setw(2) << std::setfill('0') << currentTime_c->tm_mday << 'T'
-            << std::setw(2) << std::setfill('0') << currentTime_c->tm_hour << '.'
-            << std::setw(2) << std::setfill('0') << currentTime_c->tm_min << '.'
-            << std::setw(2) << std::setfill('0') << currentTime_c->tm_sec + 1
-            ;
-    return fileName.str();
-
-}
 
 CameraThread* CameraThread::Instance() {
     if (!m_pInstance) {
@@ -161,7 +144,7 @@ void CameraThread::threadFunc() {
                 // Open the camera and throw an exception on failure.
                 std::clog << "CameraThread.cpp: in VIDEO" << std::endl;
                 omxcam_video_init(&videoSettings);
-                filename = getCurrentTime() + ".h264"; // Filename of video output.
+                filename = Utilities::getCurrentTime() + ".h264"; // Filename of video output.
                 // std::function<void(omxcam_buffer_t)> cb = std::bind(&CameraThread::onData, this, std::placeholders::_1);
                 videoSettings.on_data = Instance()->onDataVideo;
                 videoSettings.camera.width = 1920;
@@ -187,7 +170,7 @@ void CameraThread::threadFunc() {
             {
                 std::clog << "CameraThread.cpp: in CAMERA" << std::endl;
                 omxcam_still_init(&stillSettings);
-                filename = getCurrentTime() + ".jpeg"; // Filename of image output.
+                filename = Utilities::getCurrentTime() + ".jpeg"; // Filename of image output.
                 stillSettings.on_data = Instance()->onDataImage;
                 stillSettings.camera.width = 1920;
                 stillSettings.camera.height = 1080;

@@ -34,7 +34,6 @@ private:
     // Functor operator allows class to be used where void function() would be used.
     // This method is called when CameraThread is passed as an argument to something accepting a function pointer.
     void threadFunc();
-    void cameraWriterThread();
     
     static CameraThread* m_pInstance;
     
@@ -103,7 +102,6 @@ private:
     
     // Helper functions
 private:
-    static std::string getCurrentTime();
     static void onDataVideo(omxcam_buffer_t buffer);
     static void onDataImage(omxcam_buffer_t buffer);
     std::ofstream file;

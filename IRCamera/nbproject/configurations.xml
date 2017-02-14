@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="decadriver" displayName="decadriver" projectFiles="true">
+      <itemPath>decadriver/deca_device.c</itemPath>
+      <itemPath>decadriver/deca_device_api.h</itemPath>
+      <itemPath>decadriver/deca_param_types.h</itemPath>
+      <itemPath>decadriver/deca_params_init.c</itemPath>
+      <itemPath>decadriver/deca_regs.h</itemPath>
+      <itemPath>decadriver/deca_types.h</itemPath>
+      <itemPath>decadriver/deca_version.h</itemPath>
+    </logicalFolder>
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>CameraThread.h</itemPath>
       <itemPath>DWM1000Thread.h</itemPath>
+      <itemPath>../raspberrypi_omxcam/include/Utilities.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -16,6 +26,7 @@
                    projectFiles="true">
       <itemPath>CameraThread.cpp</itemPath>
       <itemPath>DWM1000Thread.cpp</itemPath>
+      <itemPath>../raspberrypi_omxcam/include/Utilities.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -39,6 +50,7 @@
   <sourceRootList>
     <Elem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\include</Elem>
     <Elem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\src</Elem>
+    <Elem>decadriver</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -77,6 +89,16 @@
           </linkerAddLib>
         </linkerTool>
       </compileType>
+      <item path="../raspberrypi_omxcam/include/Utilities.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../raspberrypi_omxcam/include/Utilities.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="CameraThread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CameraThread.h" ex="false" tool="3" flavor2="0">
@@ -84,6 +106,20 @@
       <item path="DWM1000Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DWM1000Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_param_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_params_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_regs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_version.h" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
@@ -126,6 +162,16 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="../raspberrypi_omxcam/include/Utilities.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../raspberrypi_omxcam/include/Utilities.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="CameraThread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CameraThread.h" ex="false" tool="3" flavor2="0">
@@ -133,6 +179,20 @@
       <item path="DWM1000Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DWM1000Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_param_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_params_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_regs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_version.h" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
@@ -178,6 +238,7 @@
           <incDir>
             <pElem>/opt/vc/include/</pElem>
             <pElem>../raspberrypi_omxcam/include</pElem>
+            <pElem>decadriver</pElem>
           </incDir>
           <commandLine>-Wall -pedantic -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard</commandLine>
           <preprocessorList>
@@ -220,6 +281,16 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="../raspberrypi_omxcam/include/Utilities.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../raspberrypi_omxcam/include/Utilities.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="CameraThread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CameraThread.h" ex="false" tool="3" flavor2="0">
@@ -227,6 +298,20 @@
       <item path="DWM1000Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DWM1000Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_param_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_params_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_regs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_version.h" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
@@ -292,6 +377,16 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="../raspberrypi_omxcam/include/Utilities.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../raspberrypi_omxcam/include/Utilities.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="CameraThread.cpp" ex="false" tool="1" flavor2="11">
       </item>
       <item path="CameraThread.h" ex="false" tool="3" flavor2="0">
@@ -299,6 +394,20 @@
       <item path="DWM1000Thread.cpp" ex="false" tool="1" flavor2="11">
       </item>
       <item path="DWM1000Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_param_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_params_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_regs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_version.h" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
@@ -343,6 +452,7 @@
           <incDir>
             <pElem>/opt/vc/include/</pElem>
             <pElem>../raspberrypi_omxcam/include</pElem>
+            <pElem>decadriver</pElem>
           </incDir>
           <commandLine>-Wall -pedantic -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard</commandLine>
           <preprocessorList>
@@ -370,6 +480,16 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="../raspberrypi_omxcam/include/Utilities.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../raspberrypi_omxcam/include/Utilities.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="CameraThread.cpp" ex="false" tool="1" flavor2="11">
       </item>
       <item path="CameraThread.h" ex="false" tool="3" flavor2="0">
@@ -377,6 +497,20 @@
       <item path="DWM1000Thread.cpp" ex="false" tool="1" flavor2="11">
       </item>
       <item path="DWM1000Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_device_api.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_param_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_params_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="decadriver/deca_regs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="decadriver/deca_version.h" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
