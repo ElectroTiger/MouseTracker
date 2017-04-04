@@ -1,7 +1,7 @@
 #include <ID_xxLA.h>
 
-const int RXPin = 8;
-const int unusedTXPin = 10;
+const int RXPin = 4;
+const int unusedTXPin = 6;
 const int TIRPin = 5;
 
 ID_xxLA rfidReader(RXPin, unusedTXPin, TIRPin);

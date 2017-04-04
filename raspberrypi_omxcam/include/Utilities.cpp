@@ -12,8 +12,14 @@
  */
 
 #include "Utilities.h"
+#include <chrono>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
 
-std::string getCurrentTime(void) {
+
+
+std::string Utilities::getCurrentTime() {
     auto currentTime = std::chrono::system_clock::now();
     auto currentTime_time_t = std::chrono::system_clock::to_time_t(currentTime);
     auto currentTime_c = std::localtime(&currentTime_time_t);

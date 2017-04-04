@@ -37,7 +37,7 @@ private:
     void threadFunc();
     
 public:
-    const int SPI_channel = 0; // Pi's SPI Channels. may be 0 or 1.
+    static const int SPI_channel = 0; // Pi's SPI Channels. may be 0 or 1.
 
 public:
     // TODO: Think about actual default config options.

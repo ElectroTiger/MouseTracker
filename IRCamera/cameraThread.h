@@ -62,16 +62,22 @@ public:
         uint8_t whiteBalanceBlue;
         /// Frames Per Second (FPS) to capture video at.
         float fps;
+        
+        Settings() : width(1920U), height(1080U), 
+            isColor(true), 
+            brightness(127), contrast(127), saturation(127), gain(127),
+            exposure(0), whiteBalanceRed(0), whiteBalanceBlue(0),
+            fps(19.0) {}
     };
     
     /// Default settings used when an instance of CameraThread is created.
-    static constexpr Settings defaultSettings{
-            1920U, 1080U, 
-            true, 
-            127, 127, 127, 127,
-            0, 0, 0,
-            19.0
-    };
+//    static constexpr Settings defaultSettings{
+//            1920U, 1080U, 
+//            true, 
+//            127, 127, 127, 127,
+//            0, 0, 0,
+//            19.0
+//    };
     
 private:
     std::chrono::duration<int32_t, std::micro> fps_to_stdchrono;

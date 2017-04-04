@@ -20,9 +20,10 @@
 
 // Set the instance pointer to nullptr to define it.
 CameraThread* CameraThread::m_pInstance = nullptr;
+//constexpr CameraThread::Settings defaultSettings;
 
 CameraThread* CameraThread::Instance() {
-    if (!m_pInstance) {
+    if (!std::is_null_pointer<decltype(m_pInstance)>::value) {
         m_pInstance = new CameraThread();
     }
     return m_pInstance;
@@ -43,7 +44,7 @@ void CameraThread::stop() {
 }
 
 CameraThread::CameraThread() :
-settings(defaultSettings), videoOn(false), numPicturesToTake(0), terminateNow(false) {
+settings(), videoOn(false), numPicturesToTake(0), terminateNow(false) {
 
 }
 

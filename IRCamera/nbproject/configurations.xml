@@ -431,7 +431,7 @@
     </conf>
     <conf name="Debug-Rpi-Zero" type="1">
       <toolsSet>
-        <compilerSet>GNU|GNU</compilerSet>
+        <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -465,6 +465,7 @@
           <linkerLibItems>
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>rt</linkerLibLibItem>
+            <linkerLibLibItem>wiringPi</linkerLibLibItem>
             <linkerLibProjectItem>
               <makeArtifact PL="../raspberrypi_omxcam"
                             CT="0"
