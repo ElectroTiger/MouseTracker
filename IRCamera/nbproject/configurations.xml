@@ -431,7 +431,7 @@
     </conf>
     <conf name="Debug-Rpi-Zero" type="1">
       <toolsSet>
-        <compilerSet>default</compilerSet>
+        <compilerSet>GNU|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -447,14 +447,14 @@
           </preprocessorList>
         </cTool>
         <ccTool>
-          <standard>8</standard>
+          <standard>11</standard>
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>/opt/vc/include/</pElem>
             <pElem>../raspberrypi_omxcam/include</pElem>
             <pElem>decadriver</pElem>
           </incDir>
-          <commandLine>-Wall -pedantic -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard</commandLine>
+          <commandLine>-Wall -pedantic</commandLine>
           <preprocessorList>
             <Elem>OMX_SKIP64BIT</Elem>
           </preprocessorList>
@@ -462,6 +462,8 @@
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ircamera</output>
+          <linkerDepDynSerchKind>2</linkerDepDynSerchKind>
+          <linkerCopySharedLibs>true</linkerCopySharedLibs>
           <linkerLibItems>
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>rt</linkerLibLibItem>
@@ -478,9 +480,28 @@
                             OP="lib/libomxcam.so">
               </makeArtifact>
             </linkerLibProjectItem>
+            <linkerLibLibItem>boost_system</linkerLibLibItem>
+            <linkerLibLibItem>boost_filesystem</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <packaging>
+        <packType>Tar</packType>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libomxcam.so"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libomxcam.so"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+      </packaging>
       <item path="../raspberrypi_omxcam/include/Utilities.cpp"
             ex="false"
             tool="1"

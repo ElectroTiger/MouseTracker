@@ -16,6 +16,9 @@
 #include <sstream>
 #include <cstdlib>
 #include <exception>
+#include <thread>
+#include <boost/filesystem.hpp>
+#include <stdexcept>
 #include "Utilities.h"
 
 // Set the instance pointer to nullptr to define it.
@@ -23,7 +26,7 @@ CameraThread* CameraThread::m_pInstance = nullptr;
 //constexpr CameraThread::Settings defaultSettings;
 
 CameraThread* CameraThread::Instance() {
-    if (!std::is_null_pointer<decltype(m_pInstance)>::value) {
+    if (m_pInstance == nullptr) {
         m_pInstance = new CameraThread();
     }
     return m_pInstance;
@@ -32,20 +35,53 @@ CameraThread* CameraThread::Instance() {
 void CameraThread::start() {
     setSettings(settings);
     thread = std::thread(&CameraThread::threadFunc, std::ref(*this));
+    //    thread = std::thread(&CameraThread::threadFunc, this);
 }
 
 void CameraThread::stop() {
-    //std::lock_guard<std::mutex> lock(settingsMutex);
+    {std::lock_guard<std::mutex> lock(settingsMutex);
     terminateNow = true;
-    //settingscv.notify_one();
+    settingsChanged = true;
+    stopCamera();
+    settingscv.notify_one();
+    }
     if (thread.joinable()) {
         thread.join();
     }
 }
 
-CameraThread::CameraThread() :
-settings(), videoOn(false), numPicturesToTake(0), terminateNow(false) {
+bool CameraThread::set_directory(std::string directory_path) {
+    using namespace boost::filesystem;
+    if (!portable_name(directory_path)) {
+        std::ostringstream ss;
+        ss << directory_path << " is not a valid directory path.";
+        throw new std::invalid_argument(ss.str());
+        return false;
+    } else {
+        path p{directory_path};
+        if (exists(p) && !is_directory(p)) {
+            std::ostringstream ss;
+            ss << directory_path << " exists, but is not a directory.";
+            throw new std::invalid_argument(ss.str());
+            return false;
+        } else {
+            if (!exists(p)) {
+                create_directory(p);
+            }
+            std::lock_guard<std::mutex> lock(settingsMutex);
+            file_directory = p.string();
+            return true;
+        }
+    }
+}
 
+CameraThread::CameraThread() :
+settings(), videoOn(false), numPicturesToTake(0), terminateNow(false), file_directory("ircamera") {
+    using namespace boost::filesystem;
+    path p{file_directory};
+    if (!exists(p)) {
+        create_directory(p);
+    }
 }
 
 bool CameraThread::getVideoOn() {
@@ -55,17 +91,30 @@ bool CameraThread::getVideoOn() {
 
 void CameraThread::setVideoOn(bool isOn) {
     std::lock_guard<std::mutex> lock(settingsMutex);
+    if (videoOn && !isOn) {
+        stopCamera();
+    }
     videoOn = isOn;
     settingsChanged = true;
     settingscv.notify_one();
 }
 
 void CameraThread::takePicture() {
-    std::lock_guard<std::mutex> lock(settingsMutex);
+    std::unique_lock<std::mutex> lock(settingsMutex);
+
+    // Notify the camera thread to take a picture.
     numPicturesToTake += 1;
     settingsChanged = true;
     settingscv.notify_one();
+    while (numPicturesToTake != 0) picture_taken_cv.wait(lock);
+
 }
+
+void CameraThread::waitForCompletedFile() {
+    std::unique_lock<std::mutex> lock(settingsMutex);
+    while (completedFileNames.empty()) picture_taken_cv.wait(lock);
+}
+
 
 // Callback function used when a frame is received.
 
@@ -78,15 +127,19 @@ void CameraThread::onDataVideo(omxcam_buffer_t buffer) {
         std::cerr << "Video frame write failure.";
         obj->terminateNow = true;
     }
-    if (obj->terminateNow || !(obj->videoOn)) {
-        if (omxcam_video_stop()) {
-            omxcam_perror();
-            throw std::runtime_error(omxcam_strerror(omxcam_last_error()));
-        }
-    }
+//    if (obj->terminateNow || !(obj->videoOn)) {
+//        std::clog << "Termination signal detected while omxcam active, stopping omxcam." << std::endl;
+//        if (omxcam_video_stop()) {
+//            omxcam_perror();
+//            omxcam_errno errorNum = omxcam_last_error();
+//            if (errorNum != omxcam_errno::OMXCAM_ERROR_CAMERA_STOPPING)
+//                throw std::runtime_error(omxcam_strerror(errorNum));
+//        }
+//    }
 }
 
 // Callback function used when an image is received.
+
 void CameraThread::onDataImage(omxcam_buffer_t buffer) {
     // Retrieve the instance of the camerathread singleton.
     auto obj = CameraThread::Instance();
@@ -95,9 +148,17 @@ void CameraThread::onDataImage(omxcam_buffer_t buffer) {
     if (obj->file.fail()) {
         std::cerr << "Camera frame write failure.";
     }
-    
 }
 
+void CameraThread::stopCamera() {
+    std::clog << "Termination signal detected while omxcam active, stopping omxcam." << std::endl;
+    if (omxcam_video_stop()) {
+        omxcam_perror();
+        omxcam_errno errorNum = omxcam_last_error();
+        if (errorNum != omxcam_errno::OMXCAM_ERROR_CAMERA_STOPPING)
+            throw std::runtime_error(omxcam_strerror(errorNum));
+    }
+}
 
 void CameraThread::threadFunc() {
     /* Check if the camera is attached. */
@@ -145,24 +206,36 @@ void CameraThread::threadFunc() {
                 // Open the camera and throw an exception on failure.
                 std::clog << "CameraThread.cpp: in VIDEO" << std::endl;
                 omxcam_video_init(&videoSettings);
-                filename = Utilities::getCurrentTime() + ".h264"; // Filename of video output.
                 // std::function<void(omxcam_buffer_t)> cb = std::bind(&CameraThread::onData, this, std::placeholders::_1);
-                videoSettings.on_data = Instance()->onDataVideo;
-                videoSettings.camera.width = 1920;
-                videoSettings.camera.height = 1080;
-                videoSettings.camera.framerate = 30;
-
+                int duration_copy; // Copy of the duration to capture video.
+                {
+                    std::lock_guard<std::mutex> lock(settingsMutex);
+                    filename = file_directory + '/' + Utilities::getCurrentTime() + ".h264"; // Filename of image output.
+                    videoSettings.on_data = Instance()->onDataVideo;
+                    videoSettings.camera.width = settings.width;
+                    videoSettings.camera.height = settings.height;
+                    videoSettings.camera.framerate = settings.fps;
+                    duration_copy = settings.duration;
+                }
                 file.open(filename);
                 if (file.fail()) {
                     throw std::runtime_error("File could not be opened.");
+                    std::lock_guard<std::mutex> lock(settingsMutex);
+                    videoOn = false;
                     state = OFF;
                     continue;
                 }
                 // Start the camera, which blocks this thread.
-                omxcam_video_start(&videoSettings, 1000 * 60 * 60);
+                omxcam_video_start(&videoSettings, 1000 * duration_copy);
                 // Capture is terminated in the following lines.
                 file.close();
-                completedFileNames.push_back(filename);
+                {
+                    std::lock_guard<std::mutex> lock(settingsMutex);
+                    completedFileNames.push_back(filename);
+                    videoOn = false;
+                }
+                // Inform any waiting thread that video capture is complete.
+                picture_taken_cv.notify_one();
                 state = OFF;
                 break;
             }
@@ -171,21 +244,34 @@ void CameraThread::threadFunc() {
             {
                 std::clog << "CameraThread.cpp: in CAMERA" << std::endl;
                 omxcam_still_init(&stillSettings);
-                filename = Utilities::getCurrentTime() + ".jpeg"; // Filename of image output.
-                stillSettings.on_data = Instance()->onDataImage;
-                stillSettings.camera.width = 1920;
-                stillSettings.camera.height = 1080;
-                
+
+                {
+                    std::lock_guard<std::mutex> lock(settingsMutex);
+                    filename = file_directory + '/' + Utilities::getCurrentTime() + ".jpeg"; // Filename of image output.
+                    stillSettings.on_data = Instance()->onDataImage;
+                    stillSettings.camera.width = settings.width;
+                    stillSettings.camera.height = settings.height;
+                }
+
                 // Open a file to write.
                 file.open(filename);
                 if (file.fail()) {
-                    throw std::runtime_error("File could not be opened.");
+                    std::ostringstream ss;
+                    ss << filename << " could not be opened";
+                    throw std::runtime_error(ss.str());
+                    std::lock_guard<std::mutex> lock(settingsMutex);
+                    numPicturesToTake = 0;
                     state = OFF;
                     continue;
                 }
                 omxcam_still_start(&stillSettings);
                 file.close();
                 completedFileNames.push_back(filename);
+                {
+                    std::lock_guard<std::mutex> lock(settingsMutex);
+                    numPicturesToTake--;
+                }
+                picture_taken_cv.notify_one();
                 state = OFF;
                 break;
             }
@@ -209,4 +295,15 @@ void CameraThread::setSettings(Settings const &newSettings) {
 std::vector<std::string> CameraThread::getCompletedFilenames() {
     std::lock_guard<std::mutex> lock(settingsMutex);
     return completedFileNames;
+}
+
+std::string CameraThread::popCompletedFilename() {
+    std::lock_guard<std::mutex> lock(settingsMutex);
+    if (!completedFileNames.empty()) {
+        std::string returnVal = completedFileNames.back();
+        completedFileNames.pop_back();
+        return returnVal;
+    } else {
+        return std::string();
+    }
 }

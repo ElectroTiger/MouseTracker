@@ -16,6 +16,7 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <boost/filesystem/convenience.hpp>
 
 
 
@@ -34,4 +35,26 @@ std::string Utilities::getCurrentTime() {
             << std::setw(2) << std::setfill('0') << currentTime_c->tm_sec + 1
             ;
     return fileName.str();
+}
+
+void Utilities::h264_to_avi(const fs::path& file, float fps) {
+    fs::path newFile = fs::change_extension(file, "mp4");
+    // Check that file actually points to a .h264 file.
+    if(!file.extension().compare("h264")) {
+        throw new std::invalid_argument("Provided file does not have .h264 extension.");
+    }
+    
+    if(fps <= 0) {
+        throw new std::invalid_argument("fps cannot be less than or equal to zero.");
+    }
+        
+    // If .mp4 file exists, delete it and log the event.
+    if(fs::exists(newFile)) {
+        std::cerr << "Utilities.cpp -> Warning -> " << newFile.generic_string() << " exists, deleting.";
+        fs::remove(newFile);
+    }
+    
+    
+    std::string command = "MP4Box -add " + file.generic_string() + ":fps=" + std::to_string(fps) + " " + newFile.generic_string();
+    system(command.c_str());
 }

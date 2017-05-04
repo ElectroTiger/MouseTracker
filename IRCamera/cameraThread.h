@@ -19,6 +19,7 @@
 #include <vector>
 #include <condition_variable>
 #include <atomic>
+#include <string>
 #include "../raspberrypi_omxcam/include/omxcam.h"
 
 class CameraThread {
@@ -28,6 +29,9 @@ public:
     void start();
     // Stop the cameraThread.
     void stop();
+    // Set the camera thread directory
+    // TODO: Replace string implementation with a library implementation.
+    bool set_directory(std::string directory_path);
 private:
     CameraThread();
     CameraThread(const CameraThread&) = delete; // No copies allowed.
@@ -62,13 +66,16 @@ public:
         uint8_t whiteBalanceBlue;
         /// Frames Per Second (FPS) to capture video at.
         float fps;
+        /// Duration to capture video for, in seconds.
+        int duration;
         
-        Settings() : width(1920U), height(1080U), 
+        Settings() : width(640U), height(480U), 
             isColor(true), 
             brightness(127), contrast(127), saturation(127), gain(127),
             exposure(0), whiteBalanceRed(0), whiteBalanceBlue(0),
-            fps(19.0) {}
+            fps(19.0), duration(60) {}
     };
+    
     
     /// Default settings used when an instance of CameraThread is created.
 //    static constexpr Settings defaultSettings{
@@ -90,14 +97,21 @@ public:
     bool getVideoOn(void);
     /// Set whether the camera is currently taking a video.
     void setVideoOn(bool isOn);
-    /// Take a picture with the camera. Works even during video capture.
+    /// Take a picture with the camera.
     void takePicture();
+    /// Sleeps the calling thread until cameraThread has produced a file.
+    void waitForCompletedFile();
+    /// Get a copy of the vector containing the completed file names.
     std::vector<std::string> getCompletedFilenames();
+    /// Remove the most recent completed file from the stack.
+    /// @returns empty string if the queue is empty.
+    std::string popCompletedFilename();
+
     
     // Camera settings which may be accessed from the outside.
 private:
     mutable std::mutex settingsMutex;
-    std::condition_variable settingscv;
+    std::condition_variable settingscv, picture_taken_cv;
     bool settingsChanged;
     Settings settings;
     bool videoOn;
@@ -105,11 +119,13 @@ private:
     std::vector<std::string> completedFileNames;
     std::atomic<bool> terminateNow;
     std::thread thread;
+    std::string file_directory;
     
     // Helper functions
 private:
     static void onDataVideo(omxcam_buffer_t buffer);
     static void onDataImage(omxcam_buffer_t buffer);
+    static void stopCamera();
     std::ofstream file;
 };
 #endif /* CAMERATHREAD_H */

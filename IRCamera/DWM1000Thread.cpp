@@ -26,7 +26,7 @@
 DWM1000Thread* DWM1000Thread::m_pInstance = nullptr;
 
 DWM1000Thread* DWM1000Thread::Instance() {
-    if (!std::is_null_pointer<decltype(m_pInstance)>::value) {
+    if (m_pInstance == nullptr) {
         m_pInstance = new DWM1000Thread();
     }
     return m_pInstance;

@@ -349,8 +349,8 @@
       <makefileType>
         <makeTool>
           <buildCommandWorkingDir>.</buildCommandWorkingDir>
-          <buildCommand>${MAKE} -f Makefile-shared</buildCommand>
-          <cleanCommand>${MAKE} -f Makefile-shared clean</cleanCommand>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath>lib/libomxcam.so</executablePath>
         </makeTool>
         <preBuild>
