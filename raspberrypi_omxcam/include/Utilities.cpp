@@ -18,8 +18,6 @@
 #include <iomanip>
 #include <boost/filesystem/convenience.hpp>
 
-
-
 std::string Utilities::getCurrentTime() {
     auto currentTime = std::chrono::system_clock::now();
     auto currentTime_time_t = std::chrono::system_clock::to_time_t(currentTime);
@@ -37,24 +35,39 @@ std::string Utilities::getCurrentTime() {
     return fileName.str();
 }
 
-void Utilities::h264_to_avi(const fs::path& file, float fps) {
+fs::path Utilities::h264_to_avi(const fs::path& file, float fps) {
     fs::path newFile = fs::change_extension(file, "mp4");
     // Check that file actually points to a .h264 file.
-    if(!file.extension().compare("h264")) {
+    if (!file.extension().compare("h264")) {
         throw new std::invalid_argument("Provided file does not have .h264 extension.");
     }
-    
-    if(fps <= 0) {
+
+    if (fps <= 0) {
         throw new std::invalid_argument("fps cannot be less than or equal to zero.");
     }
-        
+
     // If .mp4 file exists, delete it and log the event.
-    if(fs::exists(newFile)) {
+    if (fs::exists(newFile)) {
         std::cerr << "Utilities.cpp -> Warning -> " << newFile.generic_string() << " exists, deleting.";
         fs::remove(newFile);
     }
-    
-    
+
+
     std::string command = "MP4Box -add " + file.generic_string() + ":fps=" + std::to_string(fps) + " " + newFile.generic_string();
     system(command.c_str());
+    
+    return newFile;
+}
+
+void Utilities::concat_mp4(const fs::path& before, const fs::path& after) {
+    if (!before.extension().compare("mp4")) {
+        throw new std::invalid_argument("Provided file1 does not have .h264 extension.");
+    }
+    if (!after.extension().compare("mp4")) {
+        throw new std::invalid_argument("Provided file2 does not have .mp4 extension.");
+    }
+    
+    std::string command = "MP4Box -cat " + after.generic_string() + " " + before.generic_string();
+    system(command.c_str());
+
 }

@@ -48,32 +48,32 @@ public:
         uint16_t width;
         /// Capture height in pixels
         uint16_t height;
-        /// Capture format as grayscale or color.
-        bool isColor;
-        /// Brightness between 0 and 255
-        uint8_t brightness;
-        /// Contrast between 0 and 255
-        uint8_t contrast;
-        /// Saturation between 0 and 255
-        uint8_t saturation;
-        /// Gain (iso) between 0 and 255.
-        uint8_t gain;
-        /// Shutter speed between 1 and 255, 0 for auto.
-        uint8_t exposure;
-        /// White Balance Red between 1 and 255, 0 for auto.
-        uint8_t whiteBalanceRed;
-        /// White Balance Blue between 1 and 255, 0 for auto.
-        uint8_t whiteBalanceBlue;
-        /// Frames Per Second (FPS) to capture video at.
+//        /// Capture format as grayscale or color.
+//        bool isColor;
+//        /// Brightness between 0 and 100
+//        int8_t brightness;
+//        /// Contrast between -100 and 100
+//        int8_t contrast;
+//        /// Saturation between -100 and 100
+//        int8_t saturation;
+//        /// Gain (iso) between 0 and 255.
+//        uint8_t gain;
+//        /// Shutter speed between 1 and 255, 0 for auto.
+//        uint8_t exposure;
+//        /// White Balance Red between 1 and 255, 0 for auto.
+//        uint8_t whiteBalanceRed;
+//        /// White Balance Blue between 1 and 255, 0 for auto.
+//        uint8_t whiteBalanceBlue;
+//        /// Frames Per Second (FPS) to capture video at.
         float fps;
         /// Duration to capture video for, in seconds.
         int duration;
         
         Settings() : width(640U), height(480U), 
-            isColor(true), 
-            brightness(127), contrast(127), saturation(127), gain(127),
-            exposure(0), whiteBalanceRed(0), whiteBalanceBlue(0),
-            fps(19.0), duration(60) {}
+//            isColor(true), 
+//            brightness(50), contrast(0), saturation(0), gain(0),
+//            exposure(0), whiteBalanceRed(0), whiteBalanceBlue(0),
+            fps(25.0), duration(15) {}
     };
     
     

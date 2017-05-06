@@ -52,12 +52,12 @@ void CameraThread::stop() {
 
 bool CameraThread::set_directory(std::string directory_path) {
     using namespace boost::filesystem;
-    if (!portable_name(directory_path)) {
-        std::ostringstream ss;
-        ss << directory_path << " is not a valid directory path.";
-        throw new std::invalid_argument(ss.str());
-        return false;
-    } else {
+//    if (!portable_posix_name(directory_path)) {
+//        std::ostringstream ss;
+//        ss << directory_path << " is not a valid directory path.";
+//        throw new std::invalid_argument(ss.str());
+//        return false;
+//    } else {
         path p{directory_path};
         if (exists(p) && !is_directory(p)) {
             std::ostringstream ss;
@@ -72,7 +72,7 @@ bool CameraThread::set_directory(std::string directory_path) {
             file_directory = p.string();
             return true;
         }
-    }
+//    }
 }
 
 CameraThread::CameraThread() :
@@ -219,7 +219,7 @@ void CameraThread::threadFunc() {
                 }
                 file.open(filename);
                 if (file.fail()) {
-                    throw std::runtime_error("File could not be opened.");
+                    throw std::runtime_error("CameraThread.cpp: File << " + filename + " could not be opened.");
                     std::lock_guard<std::mutex> lock(settingsMutex);
                     videoOn = false;
                     state = OFF;
@@ -257,7 +257,7 @@ void CameraThread::threadFunc() {
                 file.open(filename);
                 if (file.fail()) {
                     std::ostringstream ss;
-                    ss << filename << " could not be opened";
+                    ss << "CameraThread.cpp: " << filename << " could not be opened";
                     throw std::runtime_error(ss.str());
                     std::lock_guard<std::mutex> lock(settingsMutex);
                     numPicturesToTake = 0;

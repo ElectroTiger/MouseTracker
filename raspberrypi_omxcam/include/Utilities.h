@@ -23,10 +23,11 @@ namespace Utilities {
     std::string getCurrentTime();
     /// Convert the .h264 file pointed to by "path" to a .avi file by calling an external program.
     /// @warning This function is non-portable! It is only tested to work on Raspberry Pi when the program MP4Box is present on it.
-    void h264_to_avi(const fs::path& file, float fps);
-    /// Concatenate two .avi files file1 and file2 to a newFile.
+    /// @return the path of the new .mp4 file.
+    fs::path h264_to_avi(const fs::path& file, float fps);
+    /// Appends the .mp4 file "after" the .mp4 file "before". 
     /// @warning This function is non-portable! It is only tested to work on Raspberry Pi when the program MP4Box is present on it.
-    /// void concat_avi(const fs::path& file1, const fs::path& file2, const fs::path& newFile);
+    void concat_mp4(const fs::path& before, const fs::path& after);
 }
 
 #endif /* UTILITIES_H */
