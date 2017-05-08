@@ -1,18 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   main.cpp
- * Author: Developer
+ * Author: Weimen Li
  *
  * Created on October 18, 2016, 9:12 PM
  */
 
 #include <cstdlib>
-//#include "../IO/IORpi.h"
 #include <thread>
 #include <functional>
 #include <iostream>
@@ -30,7 +23,7 @@ namespace fs = boost::filesystem;
  */
 int main(int argc, char** argv) {
 
-    const fs::path workingDirectory{"/boot/DCIM"};
+    const fs::path workingDirectory{"/home/pi/DCIM/"};
     if (fs::exists(workingDirectory) && !fs::is_directory(workingDirectory)) {
         fs::remove(workingDirectory);
     }
@@ -38,21 +31,21 @@ int main(int argc, char** argv) {
     if (!fs::exists(workingDirectory)) {
         fs::create_directory(workingDirectory);
     }
+    
+    // Set up redirection of clog and cerr to a file output.
+    std::string logName = Utilities::getCurrentTime() + ".log";
+    std::ofstream log_fileStream(workingDirectory.generic_string() + logName);
+    auto old_clog_rdbuf = std::clog.rdbuf();
+    std::clog.rdbuf(log_fileStream.rdbuf());
+    
+    auto old_cerr_rdbuf = std::cerr.rdbuf();
+    std::cerr.rdbuf(log_fileStream.rdbuf());
+    
 
     auto cameraThreadObj = CameraThread::Instance();
     cameraThreadObj->set_directory(workingDirectory.c_str());
-    std::cout << "Starting program" << std::endl;
+    std::clog << "Starting program" << std::endl;
     cameraThreadObj->start();
-
-    //    cameraThreadObj->setVideoOn(true);
-    //    std::this_thread::sleep_for(std::chrono::seconds(60));
-    //    cameraThreadObj->setVideoOn(false);
-    //    cameraThreadObj->takePicture();
-    //    cameraThreadObj->stop();
-    //    auto filenames = cameraThreadObj->getCompletedFilenames();
-    //    for (auto&& filename : filenames) {
-    //        std::cout << filename << std::endl;
-    //    }
 
     // Start video capture.
     if (!cameraThreadObj->getVideoOn()) {
@@ -99,7 +92,7 @@ int main(int argc, char** argv) {
     fs::path firstFilePath;
 
     auto time_start = std::chrono::steady_clock::now();
-    const std::chrono::minutes recordDuration(1);
+    const std::chrono::minutes recordDuration(60);
     while (true) {
         // Wait for video capture to complete.
         cameraThreadObj->waitForCompletedFile();
@@ -137,5 +130,7 @@ int main(int argc, char** argv) {
 
     // Terminate the running thread.
     cameraThreadObj->stop();
+    std::clog.rdbuf(old_clog_rdbuf);
+    std::cerr.rdbuf(old_cerr_rdbuf);
     return 0;
 }

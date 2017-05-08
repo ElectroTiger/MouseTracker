@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   cameraThread.h
- * Author: Developer
+ * Author: Weimen Li
  *
  * Created on October 18, 2016, 9:35 PM
  */
@@ -48,43 +42,15 @@ public:
         uint16_t width;
         /// Capture height in pixels
         uint16_t height;
-//        /// Capture format as grayscale or color.
-//        bool isColor;
-//        /// Brightness between 0 and 100
-//        int8_t brightness;
-//        /// Contrast between -100 and 100
-//        int8_t contrast;
-//        /// Saturation between -100 and 100
-//        int8_t saturation;
-//        /// Gain (iso) between 0 and 255.
-//        uint8_t gain;
-//        /// Shutter speed between 1 and 255, 0 for auto.
-//        uint8_t exposure;
-//        /// White Balance Red between 1 and 255, 0 for auto.
-//        uint8_t whiteBalanceRed;
-//        /// White Balance Blue between 1 and 255, 0 for auto.
-//        uint8_t whiteBalanceBlue;
-//        /// Frames Per Second (FPS) to capture video at.
+        /// Frames Per Second (FPS) to capture video at.
         float fps;
         /// Duration to capture video for, in seconds.
         int duration;
         
         Settings() : width(640U), height(480U), 
-//            isColor(true), 
-//            brightness(50), contrast(0), saturation(0), gain(0),
-//            exposure(0), whiteBalanceRed(0), whiteBalanceBlue(0),
             fps(25.0), duration(15) {}
     };
     
-    
-    /// Default settings used when an instance of CameraThread is created.
-//    static constexpr Settings defaultSettings{
-//            1920U, 1080U, 
-//            true, 
-//            127, 127, 127, 127,
-//            0, 0, 0,
-//            19.0
-//    };
     
 private:
     std::chrono::duration<int32_t, std::micro> fps_to_stdchrono;

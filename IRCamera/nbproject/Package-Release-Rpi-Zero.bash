@@ -6,8 +6,8 @@
 
 # Macros
 TOP=`pwd`
-CND_PLATFORM=GNU-6.2.0-Linux
-CND_CONF=Release-Rpi
+CND_PLATFORM=GNU-Linux
+CND_CONF=Release-Rpi-Zero
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 CND_DLIB_EXT=so
@@ -59,6 +59,18 @@ rm -rf ${NBTMPDIR}
 mkdir -p ${NBTMPDIR}
 
 # Copy files and create directories and links
+cd "${TOP}"
+makeDirectory "${NBTMPDIR}/ircamera/bin"
+copyFileToTmpDir "${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libomxcam.so" "${NBTMPDIR}/${PACKAGE_TOP_DIR}bin/libomxcam.so" 0755
+
+cd "${TOP}"
+makeDirectory "${NBTMPDIR}/ircamera/bin"
+copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
+
+cd "${TOP}"
+makeDirectory "${NBTMPDIR}/ircamera/bin"
+copyFileToTmpDir "${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libomxcam.so" "${NBTMPDIR}/${PACKAGE_TOP_DIR}bin/libomxcam.so" 0755
+
 cd "${TOP}"
 makeDirectory "${NBTMPDIR}/ircamera/bin"
 copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755

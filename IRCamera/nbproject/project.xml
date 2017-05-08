@@ -10,7 +10,6 @@
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects>
                 <make-dep-project>../raspberrypi_omxcam</make-dep-project>
-                <make-dep-project>../IO</make-dep-project>
             </make-dep-projects>
             <sourceRootList>
                 <sourceRootElem>C:\Users\Developer\Documents\GitHub\Mousetracker\raspberrypi_omxcam\include</sourceRootElem>
@@ -19,23 +18,11 @@
             </sourceRootList>
             <confList>
                 <confElem>
-                    <name>Debug</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Release</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Debug-RPi</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
-                    <name>Release-Rpi</name>
-                    <type>1</type>
-                </confElem>
-                <confElem>
                     <name>Debug-Rpi-Zero</name>
+                    <type>1</type>
+                </confElem>
+                <confElem>
+                    <name>Release-Rpi-Zero</name>
                     <type>1</type>
                 </confElem>
             </confList>

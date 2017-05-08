@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=IRCamera
 
 # Active Configuration
-DEFAULTCONF=Debug
+DEFAULTCONF=Debug-Rpi-Zero
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Debug Release Debug-RPi Release-Rpi Debug-Rpi-Zero 
+ALLCONFS=Debug-Rpi-Zero Release-Rpi-Zero 
 
 
 # build

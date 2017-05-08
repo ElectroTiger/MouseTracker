@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * File:   cameraThread.h
+ * Author: Weimen Li
+ *
+ * Created on October 18, 2016, 9:35 PM
  */
 
 // Function called from thread which opens the camera, records from it, and 
@@ -52,12 +53,6 @@ void CameraThread::stop() {
 
 bool CameraThread::set_directory(std::string directory_path) {
     using namespace boost::filesystem;
-//    if (!portable_posix_name(directory_path)) {
-//        std::ostringstream ss;
-//        ss << directory_path << " is not a valid directory path.";
-//        throw new std::invalid_argument(ss.str());
-//        return false;
-//    } else {
         path p{directory_path};
         if (exists(p) && !is_directory(p)) {
             std::ostringstream ss;
@@ -127,15 +122,6 @@ void CameraThread::onDataVideo(omxcam_buffer_t buffer) {
         std::cerr << "Video frame write failure.";
         obj->terminateNow = true;
     }
-//    if (obj->terminateNow || !(obj->videoOn)) {
-//        std::clog << "Termination signal detected while omxcam active, stopping omxcam." << std::endl;
-//        if (omxcam_video_stop()) {
-//            omxcam_perror();
-//            omxcam_errno errorNum = omxcam_last_error();
-//            if (errorNum != omxcam_errno::OMXCAM_ERROR_CAMERA_STOPPING)
-//                throw std::runtime_error(omxcam_strerror(errorNum));
-//        }
-//    }
 }
 
 // Callback function used when an image is received.
