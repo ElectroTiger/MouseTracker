@@ -35,6 +35,8 @@ public:
 private:
     SoftwareSerial serial;
     int tagInRangePin;
+    char previousTag[11];
+    char previousChecksum[3];
 };
 
 #endif /* ID_XXLA_H */

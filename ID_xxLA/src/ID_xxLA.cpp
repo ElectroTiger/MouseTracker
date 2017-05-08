@@ -85,9 +85,22 @@ bool ID_xxLA::getID(char *buffer, char *checksum) {
         debugPrint("Null terminating buffers...");
         buffer[10] = '\0';
         checksum[2] = '\0';
+        // Store the acquired values to return if the tag has already been read.
+        memcpy(previousTag, buffer, 11);
+        memcpy(previousChecksum, checksum, 3);
         debugPrint("Returning...");
         return isValid;
-    } else { // Branch where tag is not in range.
+    } 
+
+    else if (digitalRead(tagInRangePin)) { // Branch where tag is in range and has already been read.
+    	memcpy(buffer, previousTag, 11);
+    	if (checksum != NULL) {
+    		memcpy(checksum, previousChecksum, 3);
+    	}
+    	return true;
+    }
+
+    else { // Branch where tag is not in range.
         while(serial.available() != 0) {
             serial.read();
         }

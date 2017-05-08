@@ -48,7 +48,7 @@ public:
         int duration;
         
         Settings() : width(640U), height(480U), 
-            fps(25.0), duration(15) {}
+            fps(25.0), duration(60) {}
     };
     
     

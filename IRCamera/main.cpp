@@ -73,21 +73,6 @@ int main(int argc, char** argv) {
         }
     }
 
-    // Check for the presence of .h264 files in the working directory and convert to .mp4 file if they exist.
-    {
-        fs::recursive_directory_iterator it(workingDirectory);
-        fs::recursive_directory_iterator endit;
-        const std::string ext = ".h264";
-        while (it != endit) {
-            if (fs::is_regular_file(*it) && it->path().extension() == ext) {
-                std::clog << "Existing .h264 " << (*it).path().generic_string() << " found, converting to .mp4" << std::endl;
-                Utilities::h264_to_avi(*it, cameraThreadObj->getSettings().fps);
-                fs::remove(*it);
-            }
-            it++;
-        }
-    }
-
     bool isFirst = true;
     fs::path firstFilePath;
 

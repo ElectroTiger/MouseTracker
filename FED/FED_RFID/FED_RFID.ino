@@ -13,29 +13,41 @@
 #include <SoftwareSerial.h>
 #include <Adafruit_MotorShield.h>
 #include <ID_xxLA.h>
+
 // Notes on which pins are used:
 // The Motor shield uses the I2C pins, which are pins A4 and A5 on the Arduino pro.
 // The data logging shield uses the SPI pins, which are D10, D11, D12, and D13. 
 // Hence, the ID_xxLA RFID reader will use pins D4, D5, and D6, which should be unoccupied. 
 // The Tx pin, however, is unused because the ID-12LA does not receive any commands.
-const int PHOTO_INTERRUPTER_PIN = 2;
-const int TTL_DEBUG_PIN = 3; // This initiatlizes the pin on the Arduino that the BNC output is connected to
+const int PHOTO_INTERRUPTER_PIN = 2; // This initializes the pin on the Arduino that the photointerrupter is connected to
+ const int TTL_DEBUG_PIN = 5; // This initiatlizes the pin on the Arduino that the BNC output is connected to
 const int CS_pin = 10;  // This initializes the SD card on pin 10
 const int rfidRxPin = 4;
-const int rfidTxPin = 6;
-const int rfidTIRPin = 5;
+const int rfidTxPin = 6; // Unused, but necessary to define.
+const int rfidTIRPin = 3; // Must be pin 3, as rfidTIR pin must be interrupt-enabled.
+
+// Use this to set when the FED system should drop a new pellet.
+// PELLET_GONE: Drop a pellet if one is not present in the feed well.
+// MOUSE_NEAR: Drop a pellet if a mouse is detected by an RFID tag. 
+// BOTH: Drop a pellet when both conditions are met (Logical AND);
+enum Mode {PELLET_GONE, MOUSE_NEAR, BOTH} mode = MOUSE_NEAR;
+
+// Use this to allow only certain mice to activate a pellet drop, when MOUSE_NEAR or BOTH is used as the mode. 
+// Leave as empty for any mouse to activate a pellet drop; otherwise, populate the IDs.
+// Ensure the value of acceptable_IDs_len matches the number of elements in the array.
+// Example: const char* acceptable_IDs = {"5A6D32F59B", "12B6DE4A62"};
+const char* const acceptable_IDs[] = {""};
+const int acceptable_IDs_len = 0;
 
 // Intitialzing global variables
 File dataFile;
 #define FILENAME "FED_DATA.csv"  // Change this to alter CSV file name
-// #define PHOTO_INTERRUPTER_PIN 2 // This initializes the pin on the Arduino that the photointerrupter is connected to
 int PIState = 1;
 int lastState = 1;
 int pelletCount = 0;
 SdFat SD; // defining an object SD
 RTC_DS1307 RTC;    // refer to the real-time clock on the SD shield
 String time;
-///TODO: Fill this in with actual pins.
 ID_xxLA rfidReader(rfidRxPin, rfidTxPin, rfidTIRPin);
 
 // Defining constants for calculating timing
@@ -46,6 +58,9 @@ const long day2 = 86400000; // 86400000 milliseconds in a day
 const long hour2 = 3600000; // 3600000 milliseconds in an hour
 const long minute2 = 60000; // 60000 milliseconds in a minute
 const long second2 =  1000; // 1000 milliseconds in a second
+
+// Constants to understand the photointerrupter better.
+const int PI_present = 0;
 
 // Setting up the stepper motor 
 const int STEPS_TO_INCREMENT = 64;
@@ -87,7 +102,9 @@ int logData(){
     dataFile.print(",");
     dataFile.print(pelletCount);
     dataFile.print(",");
-    dataFile.println(timeElapsed);
+    dataFile.print(timeElapsed);
+    // Weimen: Extra comma for RFID field.
+    dataFile.println(",");
     dataFile.close();
   }
   power_twi_disable();  // this reduces power consumption
@@ -110,12 +127,70 @@ int logRFIDData(char* RFIDtag){
     Serial.println(F("File successfully written..."));
     Serial.println(time);
     dataFile.print(time);
-    dataFile.print(",");
+    // Extra commas are there to maintain the order of the .CSV file.
+    dataFile.print(",,,");
     dataFile.println(RFIDtag);
     dataFile.close();
   }
   power_twi_disable();  // this reduces power consumption
   power_spi_disable();  // this reduces power consumption
+}
+
+// Determine whether to drop a pellet.
+// Warning: RFIDtag is assumed to have length = 11.
+bool calculate_shouldDropPellet(bool PIState, bool lastPIState, char* RFIDtag, unsigned long lastDropTime) {
+    Serial.println("In calculate_shouldDropPellet.");
+  // Don't drop if it has been less than 500 ms since the last pellet was dropped.
+  unsigned long timeElapsed = millis() - lastDropTime;
+  if(timeElapsed < 500) {
+    Serial.println("  False because time elapsed not long enough.");
+    return false;
+  }
+
+  // Don't drop if a pellet is already there.
+  if (PIState == PI_present) {
+    Serial.println("  False because pellet is already present..");
+    return false;
+  }
+
+  // Drop simply if a pellet is not present.
+  if(mode == PELLET_GONE) {
+    if (PIState != PI_present) {
+      Serial.println("  True because mode is PELLET GONE and pellet is gone.");
+      return true;
+    } else {
+      Serial.println("  True because mode is PELLET GONE and pellet is not gone.");
+      return false;
+    }
+  } 
+
+  else if (mode == MOUSE_NEAR || mode == BOTH) {
+    if (mode == BOTH && PIState != PI_present) {
+      Serial.println("  False because mode is BOTH and pellet is not gone.");
+      return false;
+    }
+    // Proceed only if the RFID tag is not empty.
+    if (RFIDtag[0] != '\0') {
+      // Drop if we accept any mouse.
+      if (acceptable_IDs_len == 0) {
+        Serial.println("  True because mode is BOTH or PI_PRESENT and RFID tag detected.");
+        return true;
+      } 
+      // Otherwise, check if a preferred mouse is present.
+      else {
+        for(int i = 0; i < acceptable_IDs_len; i++) {
+          if(strncmp(RFIDtag, acceptable_IDs[i], 10) == 0) {
+            Serial.println("  True because mode is BOTH or PI_PRESENT and RFID tag matched.");
+            return true;
+          }
+        }
+        Serial.println("  False because mode is BOTH and RFID tag not matched.");
+        return false;
+      }
+    } 
+    Serial.println("  False because mode is BOTH or PI_PRESENT and RFID tag is empty.");
+    return false;
+  }
 }
 
 void setup(){
@@ -136,6 +211,8 @@ void setup(){
   // Arduino IDE to watch FED output in real-time for debugging
   Serial.begin(9600);
   Serial.println(F("Starting up..."));
+  Serial.print(F("Operating mode: "));
+  Serial.println(mode);
 
   // Set Arduino pins modes to input or output
   pinMode(PHOTO_INTERRUPTER_PIN, INPUT);
@@ -175,89 +252,97 @@ void setup(){
   }
   else {
     dataFile.print(time);
-    dataFile.println(F("Time,Pellet Count,Pellet Drop Delay"));
+    dataFile.println(F("Time,Pellet Count,Pellet Drop Delay,RFID"));
     dataFile.close();
   }    
   delay (50);  // delay helps give the card a bit more time
   lastState = 0;}
 
 //The following is the main loop of the FED code
-void loop(){
+  void loop(){
   // Read the photo interrupter pin to see if the pellet has been removed
-  PIState = digitalRead(PHOTO_INTERRUPTER_PIN);
-  
+    PIState = digitalRead(PHOTO_INTERRUPTER_PIN);
+    // Read the RFID tag.
+    char RFIDtag[11] = "";
+    bool successfulRead = rfidReader.getID(RFIDtag);
+
   // These are debugging lines for serial monitoring
-  Serial.print("Photointerrupter State: ");
-  Serial.println(PIState);
-  digitalWrite(TTL_DEBUG_PIN, LOW);
+    Serial.print("Photointerrupter State: ");
+    Serial.println(PIState);
+    digitalWrite(TTL_DEBUG_PIN, LOW);
 
   // These lines log the RFID tag if it is present.
-  char RFIDtag[6];
-  if (rfidReader.getID(RFIDtag)) {
-  	logRFIDData(RFIDtag);
-   Serial.print("Read RFID: ");
-   Serial.println(RFIDtag);
-  }
+    if (successfulRead) {
+     Serial.print("Read RFID: ");
+     Serial.println(RFIDtag);
+   }
 
   // The following checks if the pellet has been removed, and if it has it dispenses another pellet.  
   // The code contains protection against dispensing double pellets
-  if (PIState == 1  & PIState != lastState) {    
-    digitalWrite(TTL_DEBUG_PIN, HIGH);    
-    startTime = millis();
-    Serial.print(F("Time Elapsed Check: "));
-    Serial.println(timeElapsed);
-    timecounter(timeElapsed);
-    pelletCount ++;
-    logData();
-    Serial.println(F("It did work"));
-    lastState = PIState;
-  }
-  else if (PIState == 1) {
-    Serial.println(F("Turning motor..."));
-    power_twi_enable();
-    gPtrToStepper->step(STEPS_TO_INCREMENT/3,BACKWARD,DOUBLE);
-    delay (500);
-    PIState = digitalRead(PHOTO_INTERRUPTER_PIN);
-    delay(500);
-    if (PIState == 1) {gPtrToStepper->step(STEPS_TO_INCREMENT, FORWARD, DOUBLE);
-    Serial.println("moved forward");} 
-    gPtrToStepper->release();
-    power_twi_disable();
-    lastState = PIState;
-  }
-  
-  else if (PIState == 0 & PIState != lastState) {
-    Serial.print(F("Time Elapsed Since Last Pellet: "));
-    timeElapsed = millis() - startTime;
-    Serial.println(timeElapsed);
-    lastState = PIState;
-  }
-   
-  else  {
-    lastState = PIState;
-    enterSleep();
-  }
-  
-  delay(500);
-}
+    // If pellet is not present, but was present.
+    if (PIState == 1  & PIState != lastState) {    
+      digitalWrite(TTL_DEBUG_PIN, HIGH);    
+      startTime = millis();
+      Serial.print(F("Time Elapsed Check: "));
+      Serial.println(timeElapsed);
+      timecounter(timeElapsed);
+      pelletCount ++;
+      logData();
+      Serial.println(F("It did work"));
+      lastState = PIState;
+    }
+    // If pellet is not present.
+    else if (calculate_shouldDropPellet(PIState, lastState, RFIDtag, timeElapsed)) {
+      if(mode == MOUSE_NEAR || mode == BOTH) {
+        logRFIDData(RFIDtag);
+      }
+      Serial.println(F("Turning motor..."));
+      power_twi_enable();
+      gPtrToStepper->step(STEPS_TO_INCREMENT/3,BACKWARD,DOUBLE);
+      delay (500);
+      PIState = digitalRead(PHOTO_INTERRUPTER_PIN);
+      delay(500);
+      if (PIState == 1) {gPtrToStepper->step(STEPS_TO_INCREMENT, FORWARD, DOUBLE);
+        Serial.println("moved forward");} 
+        gPtrToStepper->release();
+        power_twi_disable();
+        lastState = PIState;
+      }
+      // If pellet is present, but was not present.
+      else if (PIState == 0 & PIState != lastState) {
+        Serial.print(F("Time Elapsed Since Last Pellet: "));
+        timeElapsed = millis() - startTime;
+        Serial.println(timeElapsed);
+        lastState = PIState;
+      }
+      // If pellet is simply present.
+      else  {
+        lastState = PIState;
+        Serial.flush();
+        enterSleep();
+      }
+      delay(500);
+    }
 
 // utility function for controlling time display on Serial monitor output
-void printDigits(byte digits) {
-  if (digits < 10) {
-    Serial.print('0');
-  }
-  Serial.print(digits, DEC);
-}
+    void printDigits(byte digits) {
+      if (digits < 10) {
+        Serial.print('0');
+      }
+      Serial.print(digits, DEC);
+    }
 
 // function for entering sleep mode to save power
 void enterSleep(){
   power_usart0_disable();// Serial (USART) 
   sleep_enable();
-  attachInterrupt(0, pinInterrupt, RISING);
-  lastState = 0;
+  attachInterrupt(digitalPinToInterrupt(PHOTO_INTERRUPTER_PIN), pinInterrupt, RISING);
+  attachInterrupt(digitalPinToInterrupt(rfidTIRPin), pinInterrupt, RISING);
+  // lastState = 0;
   delay(100);
   
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN);   
+  // set_sleep_mode(SLEEP_MODE_PWR_DOWN);   
+  set_sleep_mode(SLEEP_MODE_ADC);   
   cli();
   sleep_bod_disable();
   sei();
@@ -267,7 +352,8 @@ void enterSleep(){
 
 // function for allowing the FED to wakeup when pellet is removed
 void pinInterrupt(void){
-  detachInterrupt(0);
+  detachInterrupt(digitalPinToInterrupt(PHOTO_INTERRUPTER_PIN));
+  detachInterrupt(digitalPinToInterrupt(rfidTIRPin));
   /* The program will continue from here after the WDT timeout*/
   sleep_disable(); /* First thing to do is disable sleep. */
   /* Re-enable the serial. */
